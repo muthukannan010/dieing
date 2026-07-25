@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 80" width="320" height="80">
+  <defs>
+    <!-- Emerald to Teal gradient for the main water drop -->
+    <linearGradient id="logoDropGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#10B981" />
+      <stop offset="60%" stop-color="#059669" />
+      <stop offset="100%" stop-color="#0F766E" />
+    </linearGradient>
+    <!-- Cyan to Light Green gradient for the fabric threads/roll -->
+    <linearGradient id="logoFabricGrad" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#06B6D4" />
+      <stop offset="50%" stop-color="#34D399" />
+      <stop offset="100%" stop-color="#A7F3D0" />
+    </linearGradient>
+    <linearGradient id="textGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#1E293B" /> <!-- Slate-800 -->
+      <stop offset="100%" stop-color="#475569" /> <!-- Slate-600 -->
+    </linearGradient>
+    <!-- Shadow filter for modern depth -->
+    <filter id="logoShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="3" stdDeviation="3" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+
+  <!-- Group for Icon (scaled down and aligned left) -->
+  <g transform="translate(10, 10) scale(0.75)">
+    <!-- Outer Water Drop Shape -->
+    <path d="M50 12 C50 12, 82 45, 82 66 A32 32 0 0 1 18 66 C18 45, 50 12, 50 12 Z" fill="url(#logoDropGrad)" filter="url(#logoShadow)"/>
+
+    <!-- Fabric Roll Layer -->
+    <path d="M42 42 C52 32, 72 32, 80 42 C85 47, 85 58, 80 65 L60 85 C55 90, 42 90, 35 85 C28 80, 28 68, 35 60 Z" fill="none" stroke="url(#logoFabricGrad)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+    
+    <!-- Spiral structure -->
+    <path d="M48 50 C54 44, 66 44, 72 50 C76 54, 76 62, 72 66 L58 80 C55 83, 48 83, 44 80 C40 76, 40 70, 44 66 Z" fill="none" stroke="url(#logoFabricGrad)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" opacity="0.85"/>
+    
+    <!-- Glare Sheen -->
+    <path d="M30 52 C26 42, 38 24, 46 18" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" opacity="0.45"/>
+    
+    <!-- Tiny core water drop -->
+    <circle cx="50" cy="64" r="5" fill="#FFFFFF" opacity="0.9"/>
+  </g>
+
+  <!-- Text elements -->
+  <!-- "TexColor" with premium styling -->
+  <text x="85" y="44" font-family="'Outfit', 'Inter', 'Segoe UI', sans-serif" font-size="28" font-weight="800" fill="url(#textGrad)" letter-spacing="-0.5">TexColor</text>
+  
+  <!-- "ERP" highlighting standard -->
+  <text x="215" y="44" font-family="'Outfit', 'Inter', 'Segoe UI', sans-serif" font-size="28" font-weight="900" fill="#10B981" letter-spacing="0.5">ERP</text>
+  
+  <!-- Subtext Tagline -->
+  <text x="87" y="60" font-family="'Inter', 'Segoe UI', sans-serif" font-size="9.5" font-weight="600" fill="#64748B" letter-spacing="1.5">SMART TEXTILE DYEING</text>
+</svg>

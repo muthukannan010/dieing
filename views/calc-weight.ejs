@@ -1,0 +1,63 @@
+<%- include('partials/header') %>
+
+<div class="erp-container">
+  <%- include('partials/sidebar') %>
+  
+  <main class="erp-main">
+    <header class="top-actions-bar">
+      <div class="top-bar-title">
+        <h1>Weight Calculator</h1>
+        <p>Pre-production sizing calculator for fabric rolls.</p>
+      </div>
+    </header>
+
+    <div class="calculator-grid animate-fade">
+      <div class="form-card">
+        <h3 style="margin-bottom: 20px; font-family: 'Poppins', sans-serif; color: var(--dark-green);"><i class="fa-solid fa-calculator"></i> Sizing parameters</h3>
+        <form id="fabricCalcForm">
+          <div class="form-group">
+            <label for="gsm">GSM (Grams per Square Meter)</label>
+            <input type="number" id="gsm" class="form-field" required min="10" placeholder="e.g. 180">
+          </div>
+          <div class="form-group">
+            <label for="width">Fabric Width (Meters)</label>
+            <input type="number" id="width" class="form-field" required step="0.01" min="0.1" placeholder="e.g. 1.8">
+          </div>
+          <div class="form-group">
+            <label for="length">Fabric Length (Meters)</label>
+            <input type="number" id="length" class="form-field" required min="1" placeholder="e.g. 2500">
+          </div>
+          <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">
+            <i class="fa-solid fa-square-poll-horizontal"></i> Process Dimensions
+          </button>
+        </form>
+      </div>
+
+      <div class="glass-card" id="fabricResultPanel" style="opacity: 0.65;">
+        <h3 style="margin-bottom: 20px; font-family: 'Poppins', sans-serif; color: var(--dark-green);"><i class="fa-solid fa-circle-info"></i> Calculated Outputs</h3>
+        
+        <div class="result-item">
+          <span>Target Fabric Weight:</span>
+          <span class="result-val" id="res-weight">0.00 KG</span>
+        </div>
+
+        <div class="result-item">
+          <span>Estimated Water (1:10 Liquor Ratio):</span>
+          <span class="result-val" id="res-water">0 Liters</span>
+        </div>
+
+        <div class="result-item">
+          <span>Estimated Dye Pigments (2% shade):</span>
+          <span class="result-val" id="res-dye">0.00 KG</span>
+        </div>
+
+        <div class="result-item">
+          <span>Processing Cost Estimate (at $3.00/KG):</span>
+          <span class="result-val" id="res-cost" style="font-size: 1.4rem; color: var(--success);">$0.00</span>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<%- include('partials/footer') %>

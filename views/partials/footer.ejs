@@ -1,0 +1,43 @@
+  <!-- Notifications Drawer -->
+  <div class="notif-drawer" id="notificationDrawer">
+    <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 15px; margin-bottom: 20px;">
+      <h3 style="font-family: 'Poppins', sans-serif; color: var(--dark-green);"><i class="fa-regular fa-bell"></i> Notifications</h3>
+      <button onclick="toggleNotificationDrawer()" style="background: none; border: none; font-size: 1.2rem; cursor: pointer; color: var(--text-secondary);">&times;</button>
+    </div>
+    <div id="drawer-notifications-list" style="flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 12px;">
+      <p style="text-align: center; color: var(--text-secondary); font-size: 0.9rem;">No new notifications.</p>
+    </div>
+  </div>
+
+  <!-- Command Palette Overlay -->
+  <div class="palette-overlay" id="commandPalette">
+    <div class="palette-card">
+      <input type="text" class="palette-input" id="paletteSearch" placeholder="Type a command (e.g. calculator, colors, stock, orders)..." oninput="searchCommands()">
+      <ul class="palette-results" id="paletteResults">
+        <li class="palette-item" onclick="window.location.href='/dashboard'"><i class="fa-solid fa-gauge"></i> Go to ERP Dashboard</li>
+        <li class="palette-item" onclick="window.location.href='/orders'"><i class="fa-solid fa-receipt"></i> Go to Orders Ledger</li>
+        <li class="palette-item" onclick="window.location.href='/production'"><i class="fa-solid fa-helmet-safety"></i> Go to Floor Scheduler</li>
+        <li class="palette-item" onclick="window.location.href='/calc-weight'"><i class="fa-solid fa-calculator"></i> Go to Weight Calculator</li>
+        <li class="palette-item" onclick="window.location.href='/calc-chemical'"><i class="fa-solid fa-flask-vial"></i> Go to Chemical Doser</li>
+        <li class="palette-item" onclick="window.location.href='/colors'"><i class="fa-solid fa-palette"></i> Go to Color Matching</li>
+        <li class="palette-item" onclick="window.location.href='/recipes'"><i class="fa-solid fa-book-open"></i> Go to Dye Recipes</li>
+        <li class="palette-item" onclick="window.location.href='/inventory'"><i class="fa-solid fa-warehouse"></i> Go to Warehouse Inventory</li>
+        <li class="palette-item" onclick="window.location.href='/reports'"><i class="fa-solid fa-file-export"></i> Go to Reports</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Toast Box -->
+  <div id="toast" class="toast-box"></div>
+
+  <!-- Core App Controller -->
+  <script src="/js/app.js"></script>
+  
+  <script>
+    // Initialize Lucide Icons
+    lucide.createIcons();
+    // Initialize AOS
+    AOS.init({ duration: 800, once: true });
+  </script>
+</body>
+</html>

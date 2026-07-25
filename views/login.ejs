@@ -1,0 +1,40 @@
+<%- include('partials/header') %>
+
+<div class="auth-wrapper">
+  <div class="auth-box glass-card animate-fade">
+    <div style="text-align: center; margin-bottom: 25px;">
+      <img src="/images/logo.svg" alt="TexColor ERP Logo" style="height: 65px; margin-bottom: 10px;">
+      <p style="color: var(--text-secondary); font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">Smart Textile Dyeing & Production</p>
+    </div>
+
+    <form id="loginForm">
+      <div class="form-group">
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" class="form-field" required placeholder="Enter username">
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" class="form-field" required placeholder="Enter security password">
+      </div>
+
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; font-size: 0.85rem;">
+        <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
+          <input type="checkbox"> Keep me logged in
+        </label>
+        <a href="/forgot-password" style="color: var(--primary); font-weight: 600;">Recovery Key?</a>
+      </div>
+
+      <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center; padding: 12px;">
+        <i class="fa-solid fa-right-to-bracket"></i> Login to ERP Node
+      </button>
+    </form>
+
+
+    <div style="text-align: center; margin-top: 15px; font-size: 0.85rem; color: var(--text-secondary);">
+      New operator profile? <a href="/register" style="color: var(--primary); font-weight: 700;">Sign Up</a>
+    </div>
+  </div>
+</div>
+
+<%- include('partials/footer') %>

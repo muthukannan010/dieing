@@ -1,0 +1,85 @@
+<%- include('partials/header') %>
+
+<div class="app-container">
+  <%- include('partials/sidebar') %>
+  
+  <main class="app-main">
+    <header class="page-header">
+      <div class="page-title">
+        <h1>Chemical Stock Inventory</h1>
+        <p>Log chemical ingredients, specify safety datasheets, and update base costs.</p>
+      </div>
+      <div>
+        <% if (user.role === 'admin' || user.role === 'manager') { %>
+          <button class="btn btn-primary" onclick="openChemicalModal()"><i class="fa-solid fa-circle-plus"></i> Add Chemical</button>
+        <% } %>
+      </div>
+    </header>
+
+    <div class="table-card animate-fade">
+      <div class="data-table-wrapper">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Chemical Name</th>
+              <th>Usage Purpose</th>
+              <th>Quantity Per Fabric KG</th>
+              <th>Cost Per KG</th>
+              <th>Safety / Hazard Notes</th>
+              <% if (user.role === 'admin' || user.role === 'manager') { %>
+                <th>Actions</th>
+              <% } %>
+            </tr>
+          </thead>
+          <tbody id="chemicals-table-body">
+            <tr>
+              <td colspan="6" style="text-align: center; color: var(--text-secondary);">Loading chemicals...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- Add/Edit Chemical Modal -->
+<div class="modal-overlay" id="chemicalModal">
+  <div class="modal-card">
+    <button class="modal-close" onclick="closeChemicalModal()">&times;</button>
+    <h3 class="modal-title" id="modalTitle">Add Chemical Stock</h3>
+    <form id="chemicalForm">
+      <input type="hidden" id="chem-id">
+      
+      <div class="form-group">
+        <label for="chem-name">Chemical Name</label>
+        <input type="text" id="chem-name" class="form-input" required placeholder="e.g. Sodium Hydrosulfite">
+      </div>
+      
+      <div class="form-group">
+        <label for="chem-purpose">Usage Purpose</label>
+        <input type="text" id="chem-purpose" class="form-input" required placeholder="e.g. Bleaching & Reducing Agent">
+      </div>
+
+      <div class="form-group">
+        <label for="chem-qty">Standard Quantity per KG fabric (KG)</label>
+        <input type="number" id="chem-qty" class="form-input" required step="0.001" min="0.001" placeholder="e.g. 0.05">
+      </div>
+
+      <div class="form-group">
+        <label for="chem-cost">Unit Cost per KG ($)</label>
+        <input type="number" id="chem-cost" class="form-input" required step="0.01" min="0.01" placeholder="e.g. 3.45">
+      </div>
+
+      <div class="form-group">
+        <label for="chem-safety">Safety Warnings / Protective Measures</label>
+        <textarea id="chem-safety" class="form-input" rows="3" required placeholder="e.g. Contact causes eye damage. Handle with respiratory masks."></textarea>
+      </div>
+
+      <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">
+        <i class="fa-solid fa-floppy-disk"></i> Save Chemical Details
+      </button>
+    </form>
+  </div>
+</div>
+
+<%- include('partials/footer') %>

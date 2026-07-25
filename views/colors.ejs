@@ -1,0 +1,91 @@
+<%- include('partials/header') %>
+
+<div class="erp-container">
+  <%- include('partials/sidebar') %>
+  
+  <main class="erp-main">
+    <header class="top-actions-bar">
+      <div class="top-bar-title">
+        <h1>Color Matching System</h1>
+        <p>Shade matching, tone selectors, and complementary recipes.</p>
+      </div>
+    </header>
+
+    <div class="calculator-grid animate-fade">
+      <!-- Picker & wheel panel -->
+      <div class="form-card">
+        <h3 style="margin-bottom: 20px; font-family: 'Poppins', sans-serif; color: var(--dark-green);"><i class="fa-solid fa-droplet"></i> Select Color Tone</h3>
+        <div style="display: flex; gap: 20px; align-items: center; margin-bottom: 25px;">
+          <input type="color" id="hexPicker" value="#4CAF50" style="width: 80px; height: 80px; border: none; border-radius: var(--radius-sm); cursor: pointer;" oninput="updateColorMatches(this.value)">
+          <div style="flex: 1;">
+            <label style="font-weight: 700; color: var(--dark-green);">Hex Code Value</label>
+            <input type="text" id="hexText" class="form-field" value="#4CAF50" style="margin-top: 5px;" onchange="updateColorMatches(this.value)">
+          </div>
+        </div>
+
+        <div style="margin-top: 30px;">
+          <h4 style="margin-bottom: 15px; font-family: 'Poppins', sans-serif; color: var(--dark-green);">Preset Shades</h4>
+          <div style="display: flex; gap: 10px; flex-wrap: wrap;" id="preset-shades-container">
+            <!-- Loaded dynamically from db colors -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Preview panel -->
+      <div class="glass-card">
+        <h3 style="margin-bottom: 20px; font-family: 'Poppins', sans-serif; color: var(--dark-green);"><i class="fa-solid fa-eye"></i> Live Shade Preview</h3>
+        <div id="livePreviewBox" style="background-color: #4CAF50; height: 100px; border-radius: var(--radius-sm); border: 1px solid var(--border-color); display: flex; align-items: center; justify-content: center; font-weight: 700; color: white; text-shadow: 0 1px 3px rgba(0,0,0,0.5); font-size: 1.2rem; margin-bottom: 25px;">
+          #4CAF50
+        </div>
+
+        <h4 style="margin-bottom: 10px; font-family: 'Poppins', sans-serif;">Generated Harmonies</h4>
+        <div class="result-item">
+          <span>Complementary Color (180°):</span>
+          <span style="display: flex; align-items: center; gap: 10px;">
+            <span class="color-swatch-circle" id="swatch-complementary" style="background-color: #AF4C4B;"></span>
+            <strong id="val-complementary">#AF4C4B</strong>
+          </span>
+        </div>
+        
+        <div class="result-item">
+          <span>Analogous Color 1 (+30°):</span>
+          <span style="display: flex; align-items: center; gap: 10px;">
+            <span class="color-swatch-circle" id="swatch-analogous1" style="background-color: #4CAF8D;"></span>
+            <strong id="val-analogous1">#4CAF8D</strong>
+          </span>
+        </div>
+
+        <div class="result-item">
+          <span>Analogous Color 2 (-30°):</span>
+          <span style="display: flex; align-items: center; gap: 10px;">
+            <span class="color-swatch-circle" id="swatch-analogous2" style="background-color: #6CAF4C;"></span>
+            <strong id="val-analogous2">#6CAF4C</strong>
+          </span>
+        </div>
+
+        <div style="margin-top: 25px;">
+          <h4 style="margin-bottom: 15px; font-family: 'Poppins', sans-serif; color: var(--dark-green);">Shade Generator</h4>
+          <div style="display: flex; gap: 15px;">
+            <div style="flex: 1; text-align: center;">
+              <div style="height: 50px; border-radius: 4px; background-color: #A5D6A7;" id="swatch-shade-light"></div>
+              <small style="display: block; margin-top: 5px; font-weight: 600;" id="val-shade-light">#A5D6A7</small>
+              <span style="font-size: 0.75rem; color: var(--text-secondary);">Light (Shallow)</span>
+            </div>
+            <div style="flex: 1; text-align: center;">
+              <div style="height: 50px; border-radius: 4px; background-color: #4CAF50;" id="swatch-shade-medium"></div>
+              <small style="display: block; margin-top: 5px; font-weight: 600;" id="val-shade-medium">#4CAF50</small>
+              <span style="font-size: 0.75rem; color: var(--text-secondary);">Medium (Medium)</span>
+            </div>
+            <div style="flex: 1; text-align: center;">
+              <div style="height: 50px; border-radius: 4px; background-color: #2E7D32;" id="swatch-shade-dark"></div>
+              <small style="display: block; margin-top: 5px; font-weight: 600;" id="val-shade-dark">#2E7D32</small>
+              <span style="font-size: 0.75rem; color: var(--text-secondary);">Dark (Deep Shade)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<%- include('partials/footer') %>

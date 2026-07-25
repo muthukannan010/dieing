@@ -1,0 +1,62 @@
+<%- include('partials/header') %>
+
+<div class="erp-container">
+  <%- include('partials/sidebar') %>
+  
+  <main class="erp-main">
+    <header class="top-actions-bar">
+      <div class="top-bar-title">
+        <h1>Chemical Doser</h1>
+        <p>Estimate recipe weights for alkali, salts, and neutralizing chemicals.</p>
+      </div>
+    </header>
+
+    <div class="calculator-grid animate-fade">
+      <div class="form-card">
+        <h3 style="margin-bottom: 20px; font-family: 'Poppins', sans-serif; color: var(--dark-green);"><i class="fa-solid fa-flask"></i> Dosing parameters</h3>
+        <form id="chemCalcForm">
+          <div class="form-group">
+            <label for="chem-weight">Total Load Weight (KG)</label>
+            <input type="number" id="chem-weight" class="form-field" required min="1" placeholder="e.g. 800">
+          </div>
+          
+          <div class="form-group">
+            <label for="chem-type">Chemical Type</label>
+            <select id="chem-type" class="form-field">
+              <option value="Wetting Agent">Wetting Agent (Pretreatment swelling)</option>
+              <option value="Salt">Salt (Exhausting electrolyte)</option>
+              <option value="Soda Ash">Soda Ash (Alkali fixer)</option>
+              <option value="Acetic Acid">Acetic Acid (Neutralizer wash)</option>
+              <option value="Hydrogen Peroxide">Hydrogen Peroxide (Bleach)</option>
+            </select>
+          </div>
+
+          <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">
+            <i class="fa-solid fa-calculator"></i> Run Dosing Calculations
+          </button>
+        </form>
+      </div>
+
+      <div class="glass-card" id="chemResultPanel" style="opacity: 0.65;">
+        <h3 style="margin-bottom: 20px; font-family: 'Poppins', sans-serif; color: var(--dark-green);"><i class="fa-solid fa-circle-info"></i> Chemical Recommendation</h3>
+        
+        <div class="result-item">
+          <span>Required Quantity:</span>
+          <span class="result-val" id="chem-res-qty">0.00 KG</span>
+        </div>
+
+        <div class="result-item">
+          <span>Estimated Chemical Cost:</span>
+          <span class="result-val" id="chem-res-cost" style="font-size: 1.4rem; color: var(--success);">$0.00</span>
+        </div>
+
+        <div style="margin-top: 25px; background-color: rgba(76, 175, 80, 0.05); padding: 15px; border-radius: var(--radius-sm); border: 1px solid var(--border-color);">
+          <h5 style="color: var(--dark-green); margin-bottom: 5px;"><i class="fa-solid fa-triangle-exclamation"></i> Dosing instructions</h5>
+          <p id="chem-res-instructions" style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5;">No calculations processed yet.</p>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<%- include('partials/footer') %>

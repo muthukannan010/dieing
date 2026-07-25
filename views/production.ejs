@@ -1,0 +1,82 @@
+<%- include('partials/header') %>
+
+<div class="erp-container">
+  <%- include('partials/sidebar') %>
+  
+  <main class="erp-main">
+    <header class="top-actions-bar">
+      <div class="top-bar-title">
+        <h1>Floor Scheduler</h1>
+        <p>Schedule batches, load high-pressure vessels, and trace dyeing operations.</p>
+      </div>
+      <div>
+        <% if (user.role === 'Super Admin' || user.role === 'Factory Manager' || user.role === 'Production Supervisor') { %>
+          <button class="btn btn-primary" onclick="openBatchModal()"><i class="fa-solid fa-industry"></i> Schedule Batch</button>
+        <% } %>
+      </div>
+    </header>
+
+    <div class="table-panel animate-fade">
+      <div style="overflow-x: auto;">
+        <table class="erp-data-table" id="batches-datatable">
+          <thead>
+            <tr>
+              <th>Batch ID</th>
+              <th>Order Code</th>
+              <th>Vessel ID</th>
+              <th>Operator</th>
+              <th>Recipe Code</th>
+              <th>Cycle Started</th>
+              <th>Cycle Finished</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="batches-table-body">
+            <tr>
+              <td colspan="9" style="text-align: center; color: var(--text-secondary);">Querying active floor batches...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- Modal Schedule Batch -->
+<div class="modal-backdrop" id="batchModal">
+  <div class="modal-card" style="width: 100%; max-width: 500px; background-color: var(--white); padding: 35px; border-radius: var(--radius-md); position: relative; border: 1px solid var(--border-color);">
+    <button onclick="closeBatchModal()" style="position: absolute; top: 20px; right: 20px; border: none; background: none; font-size: 1.5rem; cursor: pointer; color: var(--text-secondary);">&times;</button>
+    <h3 style="font-family: 'Poppins', sans-serif; color: var(--dark-green); margin-bottom: 20px;">Schedule Dye Batch</h3>
+    
+    <form id="batchForm">
+      <div class="form-group">
+        <label for="batch-order">Select Target Order</label>
+        <select id="batch-order" class="form-field" required>
+          <option value="">-- Choose Order --</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="batch-machine">Assign Dyeing Vessel</label>
+        <select id="batch-machine" class="form-field" required>
+          <option value="">-- Choose Vessel --</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="batch-recipe">Select Dye Formulation Recipe</label>
+        <select id="batch-recipe" class="form-field" required>
+          <option value="">-- Choose Recipe --</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="batch-operator">Floor Operator Name</label>
+        <input type="text" id="batch-operator" class="form-field" required placeholder="e.g. Robert Johnson">
+      </div>
+      <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">
+        <i class="fa-solid fa-play"></i> Launch Batch Cycle
+      </button>
+    </form>
+  </div>
+</div>
+
+<%- include('partials/footer') %>

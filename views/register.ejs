@@ -1,0 +1,50 @@
+<%- include('partials/header') %>
+
+<div class="auth-wrapper">
+  <div class="auth-box glass-card animate-fade">
+    <div style="text-align: center; margin-bottom: 30px;">
+      <i class="fa-solid fa-user-plus" style="font-size: 3rem; color: var(--primary); margin-bottom: 15px;"></i>
+      <h2 style="font-family: 'Poppins', sans-serif; color: var(--dark-green);">Register Profile</h2>
+      <p style="color: var(--text-secondary); font-size: 0.95rem;">Set up your enterprise profile role</p>
+    </div>
+
+    <form id="registerForm">
+      <div class="form-group">
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" class="form-field" required placeholder="Choose a username">
+      </div>
+
+      <div class="form-group">
+        <label for="email">Corporate Email</label>
+        <input type="email" id="email" name="email" class="form-field" required placeholder="name@company.com">
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" class="form-field" required placeholder="Pick a password">
+      </div>
+
+      <div class="form-group">
+        <label for="role">Assign Role</label>
+        <select id="role" name="role" class="form-field">
+          <option value="Customer">Customer (View & Place Orders)</option>
+          <option value="Machine Operator">Machine Operator (Update Vessel Logs)</option>
+          <option value="Inventory Manager">Inventory Manager (Warehouse Stock)</option>
+          <option value="Production Supervisor">Production Supervisor (Batch Scheduler)</option>
+          <option value="Factory Manager">Factory Manager (All Control Access)</option>
+          <option value="Super Admin">Super Admin (System Administrator)</option>
+        </select>
+      </div>
+
+      <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center; margin-top: 10px;">
+        <i class="fa-solid fa-user-check"></i> Register Account
+      </button>
+    </form>
+
+    <div style="text-align: center; margin-top: 25px; font-size: 0.9rem; color: var(--text-secondary);">
+      Already have a profile? <a href="/login" style="color: var(--primary); font-weight: 700;">Log In</a>
+    </div>
+  </div>
+</div>
+
+<%- include('partials/footer') %>

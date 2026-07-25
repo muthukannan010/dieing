@@ -1,0 +1,90 @@
+<%- include('partials/header') %>
+
+<div class="app-container">
+  <%- include('partials/sidebar') %>
+  
+  <main class="app-main">
+    <header class="page-header">
+      <div class="page-title">
+        <h1>Dye Cost Calculator</h1>
+        <p>Calculate color dye quantity and financial budget estimates for fabric loads.</p>
+      </div>
+    </header>
+
+    <div class="calculator-grid animate-fade">
+      <!-- Calculator Inputs Panel -->
+      <div class="calc-panel">
+        <div class="calc-title">
+          <i class="fa-solid fa-droplet"></i>
+          <span>Dyeing parameters</span>
+        </div>
+        
+        <form id="dyeCalcForm">
+          <div class="form-group">
+            <label for="dye-weight">Fabric Batch Weight (KG)</label>
+            <input type="number" id="dye-weight" class="form-input" required min="1" max="100000" placeholder="e.g. 500">
+          </div>
+          
+          <div class="form-group">
+            <label for="dye-type">Dye Type Category</label>
+            <select id="dye-type" class="form-input">
+              <option value="Reactive Dye">Reactive Dye (Cellulosic/Cotton) - $12.00/KG</option>
+              <option value="Disperse Dye">Disperse Dye (Polyester) - $15.50/KG</option>
+              <option value="Direct Dye">Direct Dye (Economic Cotton) - $8.00/KG</option>
+              <option value="Vat Dye">Vat Dye (High Fastness) - $18.00/KG</option>
+              <option value="Acid Dye">Acid Dye (Nylon/Wool) - $14.00/KG</option>
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label for="dye-percentage">Dye Shade Depth Percentage (%)</label>
+            <input type="number" id="dye-percentage" class="form-input" required min="0.01" max="15" step="0.01" placeholder="e.g. 2.5">
+          </div>
+          
+          <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">
+            <i class="fa-solid fa-calculator"></i> Calculate Dye Cost
+          </button>
+        </form>
+      </div>
+
+      <!-- Results Display Panel -->
+      <div class="result-panel" id="dyeResultPanel" style="opacity: 0.7;">
+        <div>
+          <div class="calc-title">
+            <i class="fa-solid fa-square-poll-horizontal"></i>
+            <span>Dye Calculation Results</span>
+          </div>
+          
+          <div class="result-item">
+            <span>Dye Type Selected:</span>
+            <span class="result-val" id="dye-res-type">-</span>
+          </div>
+
+          <div class="result-item">
+            <span>Base Cost Per KG:</span>
+            <span class="result-val" id="dye-res-base-cost">$0.00</span>
+          </div>
+
+          <div class="result-item">
+            <span>Required Dye Quantity:</span>
+            <span class="result-val" id="dye-res-qty">0.00 KG</span>
+          </div>
+          
+          <div class="result-item">
+            <span>Estimated Dye Powder Cost:</span>
+            <span class="result-val" id="dye-res-total-cost" style="font-size: 1.5rem; color: var(--success);">$0.00</span>
+          </div>
+        </div>
+
+        <div style="background-color: rgba(16, 185, 129, 0.05); padding: 20px; border-radius: var(--radius-sm); border: 1px solid rgba(16, 185, 129, 0.2); margin-top: 20px;">
+          <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6;">
+            <i class="fa-solid fa-circle-info" style="color: var(--success); margin-right: 5px;"></i>
+            <strong>Technical Note:</strong> The cost estimate represents only raw dye pigments and excludes processing power, water treatment, and auxiliary salt/alkali costs.
+          </p>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<%- include('partials/footer') %>

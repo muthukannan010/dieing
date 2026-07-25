@@ -1,0 +1,304 @@
+<%- include('partials/header') %>
+
+<div class="erp-container">
+  <%- include('partials/sidebar') %>
+
+  <main class="erp-main">
+    <header class="top-actions-bar">
+      <div class="top-bar-title">
+        <h1>Factory Floor Map</h1>
+        <p>Real-time visual monitoring of production zones, vessel telemetry, and warehouse stock levels.</p>
+      </div>
+      <div style="display: flex; gap: 10px;">
+        <button class="btn btn-secondary" onclick="seedDatabaseDirect()" style="border-color: var(--primary); color: var(--primary);">
+          <i class="fa-solid fa-sync"></i> Re-Seed Demo Data
+        </button>
+        <div style="background: var(--glass-bg); padding: 8px 15px; border-radius: var(--radius-sm); border: 1px solid var(--border-color); font-size: 0.85rem; font-weight: 700; display: flex; align-items: center; gap: 8px;">
+          <span class="rack-indicator" style="background: var(--success); width: 8px; height: 8px;"></span> Live Telemetry: Active
+        </div>
+      </div>
+    </header>
+
+    <div class="map-layout-container animate-fade">
+      <!-- Left side: Interactive Canvas Map -->
+      <div class="factory-map-card">
+        <div class="factory-floor" id="factoryFloor">
+          
+          <!-- Zone 1: Dyeing Zone -->
+          <div class="floor-zone zone-dyeing">
+            <div class="zone-header">
+              <i class="fa-solid fa-soap"></i> Dyeing Vessels Section
+            </div>
+            <div class="vessels-row" id="dyeingVesselsContainer">
+              <!-- Loaded dynamically via JS -->
+              <p style="font-size: 0.8rem; color: var(--text-secondary); text-align: center; width: 100%;">Loading vessel telemetry...</p>
+            </div>
+          </div>
+
+          <!-- Zone 2: Inventory Zone -->
+          <div class="floor-zone zone-inventory">
+            <div class="zone-header">
+              <i class="fa-solid fa-warehouse"></i> Raw Materials Rack
+            </div>
+            <div class="warehouse-rack" id="inventoryRacksContainer">
+              <!-- Loaded dynamically via JS -->
+              <p style="font-size: 0.75rem; color: var(--text-secondary); text-align: center;">Loading stock level racks...</p>
+            </div>
+          </div>
+
+          <!-- Zone 3: Finishing Zone -->
+          <div class="floor-zone zone-finishing">
+            <div class="zone-header">
+              <i class="fa-solid fa-wind"></i> Finishing Line (Dry & Drape)
+            </div>
+            <div class="horizontal-flow">
+              <div class="flow-step" title="Water extractor centrifuge">
+                <i class="fa-solid fa-droplet-slash" style="color: var(--info);"></i> Hydroextractor
+              </div>
+              <div class="flow-arrow"><i class="fa-solid fa-circle-arrow-right"></i></div>
+              <div class="flow-step" title="High temperature stenter dryer">
+                <i class="fa-solid fa-temperature-three-quarters" style="color: var(--warning);"></i> Stenter Dryer
+              </div>
+              <div class="flow-arrow"><i class="fa-solid fa-circle-arrow-right"></i></div>
+              <div class="flow-step" title="Compacting machine for shrinkage setting">
+                <i class="fa-solid fa-compress" style="color: var(--primary);"></i> Compactor
+              </div>
+            </div>
+          </div>
+
+          <!-- Zone 4: Inspection Zone -->
+          <div class="floor-zone zone-inspection">
+            <div class="zone-header">
+              <i class="fa-solid fa-magnifying-glass"></i> Inspection & QA Dock
+            </div>
+            <div class="warehouse-rack" style="justify-content: space-around;">
+              <div class="rack-row" style="cursor: help;" title="Checking color fastness and shrinkage values.">
+                <span>Color Fastness Bench</span>
+                <span style="font-weight: 700; color: var(--success);"><i class="fa-solid fa-circle-check"></i> Standard</span>
+              </div>
+              <div class="rack-row" style="cursor: help;" title="Verifying GSM weight limits.">
+                <span>Fabric Weight (GSM) QA</span>
+                <span style="font-weight: 700; color: var(--success);"><i class="fa-solid fa-circle-check"></i> Passed</span>
+              </div>
+              <div class="rack-row" style="cursor: help;" title="Rolling finished fabrics.">
+                <span>Rolling & Commercial Packing</span>
+                <span style="font-weight: 700; color: var(--info);"><i class="fa-solid fa-arrows-spin animate-pulse"></i> Packing</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Right side: Legend and Quick Info -->
+      <div style="display: flex; flex-direction: column; gap: 20px;">
+        <div class="map-sidebar-panel">
+          <h3 style="font-family: 'Poppins', sans-serif; color: var(--dark-green); margin-bottom: 20px; font-size: 1.1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 10px;">Vessel Status Legend</h3>
+          
+          <div class="map-legend-item">
+            <div class="legend-dot available"></div>
+            <div>
+              <div style="font-weight: 700; color: var(--text-primary);">Available</div>
+              <div style="font-size: 0.75rem; color: var(--text-secondary);">Empty and prepared for fabric batch load</div>
+            </div>
+          </div>
+
+          <div class="map-legend-item">
+            <div class="legend-dot running"></div>
+            <div>
+              <div style="font-weight: 700; color: var(--text-primary);">Running</div>
+              <div style="font-size: 0.75rem; color: var(--text-secondary);">Undergoing active heating/dye exhaustion cycle</div>
+            </div>
+          </div>
+
+          <div class="map-legend-item">
+            <div class="legend-dot maintenance"></div>
+            <div>
+              <div style="font-weight: 700; color: var(--text-primary);">Maintenance</div>
+              <div style="font-size: 0.75rem; color: var(--text-secondary);">Filter cleaning, seal inspections, or nozzle fixes</div>
+            </div>
+          </div>
+
+          <div class="map-legend-item">
+            <div class="legend-dot offline"></div>
+            <div>
+              <div style="font-weight: 700; color: var(--text-primary);">Offline</div>
+              <div style="font-size: 0.75rem; color: var(--text-secondary);">Powered down or scheduled offline</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="map-sidebar-panel" style="background-color: rgba(213,0,0,0.02); border-color: rgba(213,0,0,0.15);">
+          <h3 style="font-family: 'Poppins', sans-serif; color: var(--danger); margin-bottom: 15px; font-size: 1rem; display: flex; align-items: center; gap: 8px;">
+            <i class="fa-solid fa-triangle-exclamation"></i> Low Stock Warnings
+          </h3>
+          <p style="font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 12px; line-height: 1.5;">
+            Inventory nodes flagged on the map represent raw materials whose stocks have dipped below safety thresholds. Click to adjust stock.
+          </p>
+          <a href="/inventory" class="btn btn-secondary" style="border-color: var(--danger); color: var(--danger); padding: 8px 12px; font-size: 0.8rem; width: 100%; justify-content: center;">
+            <i class="fa-solid fa-warehouse"></i> Open Warehouse stock
+          </a>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script>
+  // Global User Object injected from middleware/auth
+  const currentUser = {
+    role: '<%= user.role %>',
+    username: '<%= user.username %>'
+  };
+
+  async function loadMapData() {
+    try {
+      // 1. Fetch Machine Statuses
+      const machineRes = await fetch('/api/machines');
+      const machineData = await machineRes.json();
+      
+      if (machineData.success) {
+        const dyeingContainer = document.getElementById('dyeingVesselsContainer');
+        dyeingContainer.innerHTML = '';
+        
+        machineData.data.forEach(m => {
+          const statusClass = m.status.toLowerCase();
+          const isManager = currentUser.role === 'Super Admin' || currentUser.role === 'Factory Manager' || currentUser.role === 'Production Supervisor';
+          
+          let selectHtml = '';
+          if (isManager) {
+            selectHtml = `
+              <select class="form-field" style="padding: 2px 4px; font-size: 0.6rem; margin-top: 4px; height: auto;" onchange="updateMachineMapStatus(${m.id}, this.value)">
+                <option value="Available" ${m.status === 'Available' ? 'selected' : ''}>Available</option>
+                <option value="Running" ${m.status === 'Running' ? 'selected' : ''}>Running</option>
+                <option value="Maintenance" ${m.status === 'Maintenance' ? 'selected' : ''}>Maintenance</option>
+                <option value="Offline" ${m.status === 'Offline' ? 'selected' : ''}>Offline</option>
+              </select>
+            `;
+          } else {
+            selectHtml = `<span class="map-node-status" style="margin-top: 4px;">${m.status}</span>`;
+          }
+
+          dyeingContainer.innerHTML += `
+            <div class="map-node ${statusClass}">
+              <i class="fa-solid fa-server"></i>
+              <span class="map-node-label">${m.machine_code}</span>
+              ${selectHtml}
+              
+              <!-- Node Tooltip -->
+              <div class="node-tooltip">
+                <strong style="color: #10B981; font-size: 0.8rem; display:block; margin-bottom: 5px;">${m.name}</strong>
+                <table>
+                  <tr><td>Capacity:</td><td><strong>${m.capacity} KG</strong></td></tr>
+                  <tr><td>Status:</td><td><strong>${m.status}</strong></td></tr>
+                  <tr><td>Next Check:</td><td><strong>${m.maintenance_schedule || 'N/A'}</strong></td></tr>
+                </table>
+              </div>
+            </div>
+          `;
+        });
+      }
+
+      // 2. Fetch Inventory Statuses
+      const invRes = await fetch('/api/inventory');
+      const invData = await invRes.json();
+      
+      if (invData.success) {
+        const racksContainer = document.getElementById('inventoryRacksContainer');
+        racksContainer.innerHTML = '';
+        
+        // Show top 4 raw materials (prioritize low stock items)
+        const items = invData.data.items;
+        
+        // Sort items by status: low stock first
+        items.sort((a, b) => (a.quantity <= a.threshold ? -1 : 1));
+        
+        // Take top 4 for visual display
+        const displayItems = items.slice(0, 4);
+        
+        displayItems.forEach(item => {
+          const isLow = item.quantity <= item.threshold;
+          const warningClass = isLow ? 'low' : '';
+          const stockStateText = isLow ? 'LOW STOCK' : 'OK';
+          
+          racksContainer.innerHTML += `
+            <div class="rack-row ${warningClass}" style="cursor: pointer;" onclick="window.location.href='/inventory'">
+              <div>
+                <strong>${item.item_name}</strong>
+                <div style="font-size: 0.6rem; opacity: 0.8; margin-top: 2px;">${item.item_type} &bull; ${item.quantity} ${item.unit}</div>
+              </div>
+              <div style="display: flex; align-items: center; gap: 6px;">
+                <span class="map-node-status" style="font-size: 0.55rem; font-weight: 800; padding: 1px 4px; border-radius: 3px; background-color: ${isLow ? 'rgba(213,0,0,0.1)' : 'rgba(0,200,83,0.1)'}; color: ${isLow ? 'var(--danger)' : 'var(--success)'};">
+                  ${stockStateText}
+                </span>
+                <span class="rack-indicator"></span>
+              </div>
+            </div>
+          `;
+        });
+      }
+    } catch (e) {
+      console.error('Error loading map status telemetry:', e);
+    }
+  }
+
+  async function updateMachineMapStatus(id, status) {
+    try {
+      const res = await fetch(`/api/machines/${id}/status`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status })
+      });
+      const data = await res.json();
+      if (data.success) {
+        if (typeof showToast === 'function') {
+          showToast(data.message, 'success');
+        }
+        loadMapData();
+      } else {
+        if (typeof showToast === 'function') {
+          showToast(data.message, 'danger');
+        }
+      }
+    } catch (err) {
+      console.error(err);
+      if (typeof showToast === 'function') {
+        showToast('Telemetry sync failed.', 'danger');
+      }
+    }
+  }
+
+  async function seedDatabaseDirect() {
+    if (!confirm('Re-seeding will clear the entire Supabase table set and restore standard mock data. Continue?')) return;
+    try {
+      const res = await fetch('/api/demo/seed', { method: 'POST' });
+      const data = await res.json();
+      if (data.success) {
+        if (typeof showToast === 'function') {
+          showToast(data.message, 'success');
+        }
+        loadMapData();
+        // Refresh page briefly after 1.5s to align everything
+        setTimeout(() => window.location.reload(), 1500);
+      } else {
+        if (typeof showToast === 'function') {
+          showToast(data.message, 'danger');
+        }
+      }
+    } catch (err) {
+      console.error(err);
+      if (typeof showToast === 'function') {
+        showToast('Reset failed.', 'danger');
+      }
+    }
+  }
+
+  // Load immediately on load
+  document.addEventListener('DOMContentLoaded', () => {
+    loadMapData();
+    // Refresh machine floor telemetry every 5 seconds
+    setInterval(loadMapData, 5000);
+  });
+</script>
+
+<%- include('partials/footer') %>

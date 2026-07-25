@@ -1,0 +1,98 @@
+<%- include('partials/header') %>
+
+<div class="erp-container">
+  <%- include('partials/sidebar') %>
+  
+  <main class="erp-main">
+    <header class="top-actions-bar">
+      <div class="top-bar-title">
+        <h1>Dye Recipe Management</h1>
+        <p>Maintain laboratory formulations, dyer ratios, and draft duplicates.</p>
+      </div>
+      <div>
+        <% if (user.role === 'Super Admin' || user.role === 'Factory Manager' || user.role === 'Production Supervisor') { %>
+          <button class="btn btn-primary" onclick="openRecipeModal()"><i class="fa-solid fa-circle-plus"></i> New Recipe</button>
+        <% } %>
+      </div>
+    </header>
+
+    <div class="table-panel animate-fade">
+      <div style="overflow-x: auto;">
+        <table class="erp-data-table" id="recipes-datatable">
+          <thead>
+            <tr>
+              <th>Recipe Name</th>
+              <th>Color Target</th>
+              <th>Dye Ratio (%)</th>
+              <th>Liquor Ratio</th>
+              <th>Temperature (°C)</th>
+              <th>Duration (Min)</th>
+              <th>Rev Version</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="recipes-table-body">
+            <tr>
+              <td colspan="8" style="text-align: center; color: var(--text-secondary);">Querying records...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- Modal Formulation Window -->
+<div class="modal-backdrop" id="recipeModal">
+  <div class="modal-card" style="width: 100%; max-width: 580px; background-color: var(--white); padding: 35px; border-radius: var(--radius-md); position: relative; border: 1px solid var(--border-color);">
+    <button onclick="closeRecipeModal()" style="position: absolute; top: 20px; right: 20px; border: none; background: none; font-size: 1.5rem; cursor: pointer; color: var(--text-secondary);">&times;</button>
+    <h3 style="font-family: 'Poppins', sans-serif; color: var(--dark-green); margin-bottom: 25px;" id="recipeModalTitle">Add Dye Formulation</h3>
+    
+    <form id="recipeForm">
+      <input type="hidden" id="recipe-id">
+      
+      <div class="form-group">
+        <label for="rec-name">Recipe Name Code</label>
+        <input type="text" id="rec-name" class="form-field" required placeholder="e.g. Formula COT-RUBY">
+      </div>
+
+      <div class="form-group">
+        <label for="rec-color">Color Shade Name</label>
+        <input type="text" id="rec-color" class="form-field" required placeholder="e.g. Ruby Red">
+      </div>
+
+      <div class="form-group" style="display: flex; gap: 15px;">
+        <div style="flex: 1;">
+          <label for="rec-dye">Dye Ratio (%)</label>
+          <input type="number" id="rec-dye" class="form-field" required step="0.01" min="0.01" placeholder="e.g. 2.5">
+        </div>
+        <div style="flex: 1;">
+          <label for="rec-water">Liquor Ratio (1:X)</label>
+          <input type="number" id="rec-water" class="form-field" required step="1" min="1" placeholder="e.g. 10">
+        </div>
+      </div>
+
+      <div class="form-group" style="display: flex; gap: 15px;">
+        <div style="flex: 1;">
+          <label for="rec-temp">Dyeing Temp (°C)</label>
+          <input type="number" id="rec-temp" class="form-field" required min="30" max="140" placeholder="e.g. 98">
+        </div>
+        <div style="flex: 1;">
+          <label for="rec-duration">Duration (Minutes)</label>
+          <input type="number" id="rec-duration" class="form-field" required min="5" placeholder="e.g. 60">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="rec-formula">Chemical Formula & Ratios Details</label>
+        <textarea id="rec-formula" class="form-field" rows="3" placeholder="e.g. Salt: 50g/L, Soda Ash: 15g/L"></textarea>
+      </div>
+
+      <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">
+        <i class="fa-solid fa-floppy-disk"></i> Save Recipe
+      </button>
+    </form>
+  </div>
+</div>
+
+<%- include('partials/footer') %>

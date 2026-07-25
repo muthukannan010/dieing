@@ -1,0 +1,121 @@
+<%- include('partials/header') %>
+
+<div class="erp-container">
+  <%- include('partials/sidebar') %>
+  
+  <main class="erp-main">
+    <header class="top-actions-bar">
+      <div class="top-bar-title">
+        <h1>Customer Desk</h1>
+        <p>Log fabric dyeing requests, check production metrics, and submit support files.</p>
+      </div>
+    </header>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;" class="animate-fade">
+      <!-- Create Dyeing Order Card -->
+      <div class="form-card">
+        <h3 style="margin-bottom: 20px; font-family: 'Poppins', sans-serif; color: var(--dark-green);"><i class="fa-solid fa-cart-plus"></i> Request Dyeing Job</h3>
+        <form id="customerOrderForm">
+          <div class="form-group">
+            <label for="cust-fabric">Select Fabric Category</label>
+            <select id="cust-fabric" class="form-field" required>
+              <option value="">-- Choose Fabric --</option>
+              <!-- Loaded dynamically -->
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="cust-color">Target Shade/Color</label>
+            <input type="text" id="cust-color" class="form-field" required placeholder="e.g. Sapphire Blue">
+          </div>
+
+          <div class="form-group" style="display: flex; gap: 15px;">
+            <div style="flex: 1;">
+              <label for="cust-qty">Order Qty (KG)</label>
+              <input type="number" id="cust-qty" class="form-field" required min="1" placeholder="e.g. 500">
+            </div>
+            <div style="flex: 1;">
+              <label for="cust-gsm">Fabric GSM</label>
+              <input type="number" id="cust-gsm" class="form-field" required min="10" placeholder="e.g. 180">
+            </div>
+          </div>
+
+          <div class="form-group" style="display: flex; gap: 15px;">
+            <div style="flex: 1;">
+              <label for="cust-width">Width (Meters)</label>
+              <input type="number" id="cust-width" class="form-field" required step="0.01" min="0.1" placeholder="e.g. 1.8">
+            </div>
+            <div style="flex: 1;">
+              <label for="cust-length">Length (Meters)</label>
+              <input type="number" id="cust-length" class="form-field" required min="1" placeholder="e.g. 2500">
+            </div>
+          </div>
+
+          <div class="form-group" style="display: flex; gap: 15px;">
+            <div style="flex: 1;">
+              <label for="cust-dye">Dye Class</label>
+              <select id="cust-dye" class="form-field" required>
+                <option value="Reactive Dye">Reactive Dye (Cotton)</option>
+                <option value="Disperse Dye">Disperse Dye (Polyester)</option>
+                <option value="Acid Dye">Acid Dye (Wool/Silk)</option>
+              </select>
+            </div>
+            <div style="flex: 1;">
+              <label for="cust-delivery">Required Delivery</label>
+              <input type="date" id="cust-delivery" class="form-field" required>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">
+            <i class="fa-solid fa-file-invoice-dollar"></i> Place Dyeing Order
+          </button>
+        </form>
+      </div>
+
+      <!-- Support Request Form -->
+      <div class="glass-card">
+        <h3 style="margin-bottom: 20px; font-family: 'Poppins', sans-serif; color: var(--dark-green);"><i class="fa-solid fa-circle-question"></i> Help & Tech Support</h3>
+        <form onsubmit="event.preventDefault(); showToast('Support ticket registered! Support will respond shortly.', 'success'); e.target.reset();">
+          <div class="form-group">
+            <label>Subject</label>
+            <input type="text" class="form-field" required placeholder="e.g. Fabric swatch matching request">
+          </div>
+          <div class="form-group">
+            <label>Description of Issue</label>
+            <textarea class="form-field" rows="4" required placeholder="Describe fastness values or batch questions..."></textarea>
+          </div>
+          <button type="submit" class="btn btn-secondary" style="width: 100%; justify-content: center;">
+            <i class="fa-regular fa-paper-plane"></i> Send Ticket
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Active Orders Progress -->
+    <div class="table-panel animate-fade" style="margin-top: 40px; animation-delay: 0.1s;">
+      <h3 style="margin-bottom: 20px; font-family: 'Poppins', sans-serif; color: var(--dark-green);"><i class="fa-solid fa-list-ul"></i> Your Dyeing Order Logs</h3>
+      <div style="overflow-x: auto;">
+        <table class="erp-data-table" id="customer-orders-table">
+          <thead>
+            <tr>
+              <th>Order No</th>
+              <th>Fabric Details</th>
+              <th>Color Tone</th>
+              <th>Weight (KG)</th>
+              <th>Due Date</th>
+              <th>Status</th>
+              <th>Labels</th>
+            </tr>
+          </thead>
+          <tbody id="customer-orders-body">
+            <tr>
+              <td colspan="7" style="text-align: center; color: var(--text-secondary);">Querying your order records...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+</div>
+
+<%- include('partials/footer') %>

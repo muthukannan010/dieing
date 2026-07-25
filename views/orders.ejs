@@ -1,0 +1,160 @@
+<%- include('partials/header') %>
+
+<div class="erp-container">
+  <%- include('partials/sidebar') %>
+  
+  <main class="erp-main">
+    <header class="top-actions-bar">
+      <div class="top-bar-title">
+        <h1>Orders Ledger Control</h1>
+        <p>Review dyeing contracts, inspect fabric details, and modify status.</p>
+      </div>
+      <div>
+        <% if (user.role === 'Super Admin' || user.role === 'Factory Manager') { %>
+          <button class="btn btn-primary" onclick="openOrderModal()"><i class="fa-solid fa-cart-plus"></i> Create Order</button>
+        <% } %>
+      </div>
+    </header>
+
+    <div class="table-panel animate-fade">
+      <div class="table-controls">
+        <div class="search-filter-box">
+          <input type="text" id="orderSearch" class="table-search" placeholder="Search orders..." oninput="loadOrders()">
+          <select id="orderStatusFilter" class="table-filter" onchange="loadOrders()">
+            <option value="">All Statuses</option>
+            <option value="Pending">Pending</option>
+            <option value="Scheduled">Scheduled</option>
+            <option value="Dyeing">Dyeing</option>
+            <option value="Washing">Washing</option>
+            <option value="Drying">Drying</option>
+            <option value="Quality Check">Quality Check</option>
+            <option value="Completed">Completed</option>
+            <option value="Delivered">Delivered</option>
+          </select>
+        </div>
+      </div>
+
+      <div style="overflow-x: auto;">
+        <table class="erp-data-table" id="orders-datatable">
+          <thead>
+            <tr>
+              <th>Order No</th>
+              <th>Customer</th>
+              <th>Fabric Type</th>
+              <th>Color Shade</th>
+              <th>Weight (KG)</th>
+              <th>Metrics</th>
+              <th>Status</th>
+              <th>Due Date</th>
+              <th>Labels</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="orders-table-body">
+            <tr>
+              <td colspan="10" style="text-align: center; color: var(--text-secondary);">Querying order data...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- Modal Add/Edit Order -->
+<div class="modal-backdrop" id="orderModal">
+  <div class="modal-card" style="width: 100%; max-width: 600px; background-color: var(--white); padding: 35px; border-radius: var(--radius-md); position: relative; border: 1px solid var(--border-color);">
+    <button onclick="closeOrderModal()" style="position: absolute; top: 20px; right: 20px; border: none; background: none; font-size: 1.5rem; cursor: pointer; color: var(--text-secondary);">&times;</button>
+    <h3 style="font-family: 'Poppins', sans-serif; color: var(--dark-green); margin-bottom: 20px;" id="orderModalTitle">Place Dyeing Order</h3>
+    
+    <form id="orderForm">
+      <input type="hidden" id="order-id">
+      
+      <div class="form-group">
+        <label for="order-customer">Select Customer</label>
+        <select id="order-customer" class="form-field" required>
+          <option value="">-- Choose Customer --</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="order-fabric">Fabric Type description</label>
+        <select id="order-fabric" class="form-field" required>
+          <option value="">-- Choose Fabric --</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="order-color">Target Color shade name</label>
+        <input type="text" id="order-color" class="form-field" required placeholder="e.g. Ruby Red">
+      </div>
+
+      <div class="form-group" style="display: flex; gap: 15px;">
+        <div style="flex: 1;">
+          <label for="order-qty">Batch weight (KG)</label>
+          <input type="number" id="order-qty" class="form-field" required min="1" placeholder="e.g. 500">
+        </div>
+        <div style="flex: 1;">
+          <label for="order-gsm">Fabric GSM</label>
+          <input type="number" id="order-gsm" class="form-field" required min="10" placeholder="e.g. 180">
+        </div>
+      </div>
+
+      <div class="form-group" style="display: flex; gap: 15px;">
+        <div style="flex: 1;">
+          <label for="order-width">Width (Meters)</label>
+          <input type="number" id="order-width" class="form-field" required step="0.01" min="0.1" placeholder="e.g. 1.8">
+        </div>
+        <div style="flex: 1;">
+          <label for="order-length">Length (Meters)</label>
+          <input type="number" id="order-length" class="form-field" required min="1" placeholder="e.g. 3500">
+        </div>
+      </div>
+
+      <div class="form-group" style="display: flex; gap: 15px;">
+        <div style="flex: 1;">
+          <label for="order-dye-type">Dye Class</label>
+          <select id="order-dye-type" class="form-field">
+            <option value="Reactive Dye">Reactive Dye</option>
+            <option value="Disperse Dye">Disperse Dye</option>
+            <option value="Acid Dye">Acid Dye</option>
+          </select>
+        </div>
+        <div style="flex: 1;" id="order-status-group">
+          <label for="order-status">Dye status</label>
+          <select id="order-status" class="form-field">
+            <option value="Pending">Pending</option>
+            <option value="Scheduled">Scheduled</option>
+            <option value="Dyeing">Dyeing</option>
+            <option value="Washing">Washing</option>
+            <option value="Drying">Drying</option>
+            <option value="Quality Check">Quality Check</option>
+            <option value="Completed">Completed</option>
+            <option value="Delivered">Delivered</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="order-delivery">Delivery deadline</label>
+        <input type="date" id="order-delivery" class="form-field" required>
+      </div>
+
+      <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">
+        <i class="fa-solid fa-floppy-disk"></i> Register Order
+      </button>
+    </form>
+  </div>
+</div>
+
+<!-- QR Modal Container -->
+<div class="modal-backdrop" id="qrModal">
+  <div class="modal-card" style="width: 100%; max-width: 380px; background-color: var(--white); padding: 35px; border-radius: var(--radius-md); position: relative; text-align: center; border: 1px solid var(--border-color);">
+    <button onclick="closeQrModal()" style="position: absolute; top: 20px; right: 20px; border: none; background: none; font-size: 1.5rem; cursor: pointer; color: var(--text-secondary);">&times;</button>
+    <h3 style="font-family: 'Poppins', sans-serif; color: var(--dark-green); margin-bottom: 20px;"><i class="fa-solid fa-qrcode"></i> QR Routing Tag</h3>
+    <div id="qrcode-container" style="display: flex; justify-content: center; margin-bottom: 20px;"></div>
+    <p style="font-size: 0.85rem; color: var(--text-secondary);" id="qrModalText"></p>
+  </div>
+</div>
+
+<%- include('partials/footer') %>

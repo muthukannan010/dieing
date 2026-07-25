@@ -1,0 +1,81 @@
+<%- include('partials/header') %>
+
+<div class="erp-container">
+  <%- include('partials/sidebar') %>
+  
+  <main class="erp-main">
+    <header class="top-actions-bar">
+      <div class="top-bar-title">
+        <h1>Reports & Export Control</h1>
+        <p>Compile analytical reports, print details, and export to PDF/Excel spreadsheets.</p>
+      </div>
+    </header>
+
+    <div class="glass-card animate-fade" style="margin-bottom: 30px;">
+      <h3 style="margin-bottom: 20px; font-family: 'Poppins', sans-serif; color: var(--dark-green);">Choose Report Category</h3>
+      <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+        <button class="btn btn-secondary" onclick="loadReport('daily')"><i class="fa-solid fa-calendar-day"></i> Daily Operations</button>
+        <button class="btn btn-secondary" onclick="loadReport('weekly')"><i class="fa-solid fa-calendar-week"></i> Weekly Operations</button>
+        <button class="btn btn-secondary" onclick="loadReport('monthly')"><i class="fa-solid fa-calendar-days"></i> Monthly Operations</button>
+        <button class="btn btn-secondary" onclick="loadReport('chemical')"><i class="fa-solid fa-flask"></i> Chemical Usage</button>
+        <button class="btn btn-secondary" onclick="loadReport('revenue')"><i class="fa-solid fa-file-invoice-dollar"></i> Revenue Report</button>
+        <button class="btn btn-secondary" onclick="loadReport('production')"><i class="fa-solid fa-industry"></i> Machine Efficiency</button>
+        <button class="btn btn-secondary" onclick="loadReport('inventory')"><i class="fa-solid fa-warehouse"></i> Warehouse Stock</button>
+      </div>
+    </div>
+
+    <!-- Generated view panel -->
+    <div id="report-view-panel" class="table-panel animate-fade" style="display: none;">
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 2px solid var(--border-color); padding-bottom: 25px; margin-bottom: 25px; flex-wrap: wrap; gap: 20px;">
+        <div>
+          <h2 id="report-rendered-title" style="font-family: 'Poppins', sans-serif; color: var(--dark-green);">ERP Report Sheet</h2>
+          <p id="report-rendered-summary" style="color: var(--text-secondary); margin-top: 5px; font-size: 0.95rem;"></p>
+        </div>
+        <div style="display: flex; gap: 10px;">
+          <button class="btn btn-secondary" onclick="exportReportToExcel()"><i class="fa-regular fa-file-excel"></i> Excel Export</button>
+          <button class="btn btn-secondary" onclick="exportReportToPDF()"><i class="fa-regular fa-file-pdf"></i> PDF Export</button>
+          <button class="btn btn-primary" onclick="window.print()"><i class="fa-solid fa-print"></i> Print</button>
+        </div>
+      </div>
+
+      <div class="kpi-wrapper-grid" style="margin-bottom: 40px;">
+        <div class="kpi-metric-card" style="background-color: var(--bg-color);">
+          <div>
+            <div class="metric-title">Orders Logged</div>
+            <div class="metric-val" id="rep-kpi-orders">0</div>
+          </div>
+        </div>
+        <div class="kpi-metric-card" style="background-color: var(--bg-color);">
+          <div>
+            <div class="metric-title">Completed Jobs</div>
+            <div class="metric-val" id="rep-kpi-completed">0</div>
+          </div>
+        </div>
+        <div class="kpi-metric-card" style="background-color: var(--bg-color);">
+          <div>
+            <div class="metric-title">Total Throughput</div>
+            <div class="metric-val" id="rep-kpi-volume">0 KG</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="overflow-x: auto;">
+        <table class="erp-data-table" id="rendered-report-table">
+          <thead>
+            <tr>
+              <th id="th-metric">Metric Item</th>
+              <th id="th-details">Operation Details</th>
+              <th id="th-vol">Throughput Balance</th>
+              <th id="th-financial">Estimated Value / Status</th>
+            </tr>
+          </thead>
+          <tbody id="report-table-body">
+            <!-- Loaded dynamically -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+</div>
+
+<%- include('partials/footer') %>

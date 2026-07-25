@@ -1,0 +1,331 @@
+<%- include('partials/header') %>
+
+<!-- Sticky Landing Navigation -->
+<nav class="sticky-nav">
+  <div class="logo-brand">
+    <img src="/images/logo.svg" alt="TexColor ERP Logo" style="height: 48px; transition: transform 0.3s;" onmouseover="this.style.transform='scale(1.03)'" onmouseout="this.style.transform='scale(1)'">
+  </div>
+  <ul class="nav-links">
+    <li><a href="#about">Overview</a></li>
+    <li><a href="#services">Core Modules</a></li>
+    <li><a href="#workflow">Production Pipeline</a></li>
+    <li><a href="#pricing">Licensing</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <div class="action-buttons">
+    <% if (locals.user) { %>
+      <a href="/dashboard" class="btn btn-primary"><i class="fa-solid fa-gauge"></i> Enter ERP Dashboard</a>
+    <% } else { %>
+      <a href="/login" class="btn btn-secondary">Log In</a>
+      <a href="/register" class="btn btn-primary">Join Platform</a>
+    <% } %>
+  </div>
+</nav>
+
+<!-- Hero Section with Canvas weave overlay -->
+<section class="hero-sec" style="position: relative; overflow: hidden;">
+  <div class="hero-content" data-aos="fade-right" style="position: relative; z-index: 2;">
+    <h1 class="hero-title">Intelligent Dyeing.<br><span>Smarter Production.</span></h1>
+    <p class="hero-desc">The modern SaaS ERP built for high-throughput textile dyeing plants. Automate chemical recipes, track high-temperature vessels, optimize resource scheduling, and run first-time-right batches with live telemetry.</p>
+    <div style="display: flex; gap: 15px;">
+      <a href="/login" class="btn btn-primary"><i class="fa-solid fa-right-to-bracket"></i> Access ERP Console</a>
+      <a href="#services" class="btn btn-secondary">Explore Modules</a>
+    </div>
+  </div>
+  <div class="hero-illustration" data-aos="fade-left" style="position: relative; z-index: 2;">
+    <div class="illustrator-card" style="background: none; box-shadow: none; overflow: visible; height: 360px; width: 100%; max-width: 480px; border: 1px solid var(--border-color); border-radius: var(--radius-lg); background: var(--glass-bg); backdrop-filter: blur(8px); position: relative;">
+      <canvas id="textileCanvas" style="width: 100%; height: 100%; border-radius: var(--radius-lg); display: block;"></canvas>
+      <div style="position: absolute; top: 15px; left: 15px; background: rgba(15,26,16,0.85); color: #10B981; border: 1px solid var(--border-color); padding: 5px 12px; border-radius: 4px; font-size: 0.7rem; font-weight: 700; font-family: monospace; display: flex; align-items: center; gap: 8px; box-shadow: var(--shadow-sm);">
+        <span class="rack-indicator" style="display: inline-block; width: 6px; height: 6px; background: #10B981; border-radius: 50%; animation: pulse-danger-glow 1.5s infinite;"></span>
+        LIVE DYE & WEAVE SIMULATOR
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Stats counters -->
+<section class="counters-grid" id="counters">
+  <div class="counter-card" data-aos="zoom-in">
+    <div class="counter-num" id="stat-orders" data-target="1254" data-plus="true">0</div>
+    <div style="font-weight: 700; color: var(--dark-green); font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.5px;">Orders Processed / Mo</div>
+  </div>
+  <div class="counter-card" data-aos="zoom-in" style="animation-delay: 0.1s;">
+    <div class="counter-num" id="stat-batches" data-target="89">0</div>
+    <div style="font-weight: 700; color: var(--dark-green); font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.5px;">Active Floor Batches</div>
+  </div>
+  <div class="counter-card" data-aos="zoom-in" style="animation-delay: 0.2s;">
+    <div class="counter-num" id="stat-revenue" data-target="2845000" data-currency="true">0</div>
+    <div style="font-weight: 700; color: var(--dark-green); font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.5px;">Monthly Revenue Managed</div>
+  </div>
+  <div class="counter-card" data-aos="zoom-in" style="animation-delay: 0.3s;">
+    <div class="counter-num" id="stat-precision" data-target="99.4" data-percentage="true">0</div>
+    <div style="font-weight: 700; color: var(--dark-green); font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.5px;">Shade Matching Accuracy</div>
+  </div>
+</section>
+
+<!-- Company Overview / About -->
+<section id="about" style="padding: 80px 6%;" data-aos="fade-up">
+  <h2 style="font-family: 'Poppins', sans-serif; font-size: 2.2rem; text-align: center; color: var(--dark-green); margin-bottom: 20px;">Precision Textile Engineering</h2>
+  <p style="text-align: center; max-width: 800px; margin: 0 auto; color: var(--text-secondary); font-size: 1.1rem; line-height: 1.8;">
+    TexColor ERP bridges the gap between laboratory recipe formulation and factory floor production. Our platform helps colorists match precise Pantone standards, estimates chemical dosing thresholds, displays live machine floor telemetry, and outputs clean analytics logs.
+  </p>
+</section>
+
+<!-- Services Grid -->
+<section id="services" style="padding: 80px 6%; border-top: 1px solid var(--border-color);" data-aos="fade-up">
+  <h2 style="font-family: 'Poppins', sans-serif; font-size: 2.2rem; text-align: center; color: var(--dark-green); margin-bottom: 50px;">Integrated ERP Modules</h2>
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px;">
+    <div class="glass-card">
+      <i class="fa-solid fa-calculator" style="color: var(--primary); font-size: 2.2rem; margin-bottom: 20px;"></i>
+      <h3 style="margin-bottom: 15px; color: var(--dark-green);">Automated Fabric Calculator</h3>
+      <p style="color: var(--text-secondary);">Calculate fabric weight dimensions, water volume requirements, color pigment allocations, and dyeing cost estimations based on customizable liquor ratios.</p>
+    </div>
+    
+    <div class="glass-card">
+      <i class="fa-solid fa-palette" style="color: var(--primary); font-size: 2.2rem; margin-bottom: 20px;"></i>
+      <h3 style="margin-bottom: 15px; color: var(--dark-green);">Color Matching Engine</h3>
+      <p style="color: var(--text-secondary);">Upload or match hex colors with standard lab databases. Generates analogous palettes, shade depths, complementary color coordinates, and outputs recipe structures.</p>
+    </div>
+
+    <div class="glass-card">
+      <i class="fa-solid fa-map-location-dot" style="color: var(--primary); font-size: 2.2rem; margin-bottom: 20px;"></i>
+      <h3 style="margin-bottom: 15px; color: var(--dark-green);">Interactive Factory Map</h3>
+      <p style="color: var(--text-secondary);">A real-time visual floor plan tracking high-temperature vessels, warehouse inventory levels, finishing lines, and QA desks with live telemetry overrides.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Factory Workflow -->
+<section id="workflow" class="workflow-section" style="border-top: 1px solid var(--border-color);" data-aos="fade-up">
+  <h2 style="font-family: 'Poppins', sans-serif; font-size: 2.2rem; text-align: center; color: var(--dark-green);">Fabric-to-Finish Workflow</h2>
+  <div class="workflow-timeline">
+    <div class="workflow-step">
+      <div class="step-icon"><i class="fa-solid fa-receipt"></i></div>
+      <h4 style="color: var(--dark-green); margin-bottom: 5px;">1. Order Booking</h4>
+      <p style="font-size: 0.85rem; color: var(--text-secondary);">Customer registers orders specifying fabric code, GSM weight, and targeted color shade parameters.</p>
+    </div>
+    
+    <div class="workflow-step">
+      <div class="step-icon"><i class="fa-solid fa-flask-vial"></i></div>
+      <h4 style="color: var(--dark-green); margin-bottom: 5px;">2. Recipe Formulation</h4>
+      <p style="font-size: 0.85rem; color: var(--text-secondary);">Dyeing master selects the color, matches analogous shades, and creates the exact recipe.</p>
+    </div>
+
+    <div class="workflow-step">
+      <div class="step-icon"><i class="fa-solid fa-server"></i></div>
+      <h4 style="color: var(--dark-green); margin-bottom: 5px;">3. Vessel Allocation</h4>
+      <p style="font-size: 0.85rem; color: var(--text-secondary);">Batch is scheduled on the floor and assigned to an available high-temperature Fong vessel.</p>
+    </div>
+
+    <div class="workflow-step">
+      <div class="step-icon"><i class="fa-solid fa-circle-check"></i></div>
+      <h4 style="color: var(--dark-green); margin-bottom: 5px;">4. Quality Control</h4>
+      <p style="font-size: 0.85rem; color: var(--text-secondary);">Fabric undergoes washing, drying, color fastness inspection, and final commercial packaging.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Pricing Grid Section -->
+<section id="pricing" style="padding: 80px 6%; border-top: 1px solid var(--border-color);" data-aos="fade-up">
+  <h2 style="font-family: 'Poppins', sans-serif; font-size: 2.2rem; text-align: center; color: var(--dark-green); margin-bottom: 50px;">Subscription Plans</h2>
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; max-width: 1000px; margin: 0 auto;">
+    <div class="glass-card" style="text-align: center;">
+      <h3 style="color: var(--text-secondary);">Standard License</h3>
+      <div style="font-size: 2.5rem; font-weight: 800; color: var(--dark-green); margin: 20px 0;">₹18,500<small style="font-size: 1rem;">/mo</small></div>
+      <ul style="list-style: none; padding: 0; margin-bottom: 30px; display: flex; flex-direction: column; gap: 10px; font-size: 0.9rem; color: var(--text-secondary);">
+        <li>Track up to 6 Dyeing Vessels</li>
+        <li>Fabric Weight & Pretreatment Calculators</li>
+        <li>Up to 15 Registered Accounts</li>
+        <li>Standard Inventory Notifications</li>
+      </ul>
+      <a href="/register" class="btn btn-secondary" style="width: 100%; justify-content: center;">Start Basic Setup</a>
+    </div>
+    
+    <div class="glass-card" style="text-align: center; border-color: var(--primary); background-color: rgba(76, 175, 80, 0.02);">
+      <div style="background-color: var(--primary); color: white; padding: 4px 12px; border-radius: 12px; font-size: 0.75rem; display: inline-block; font-weight: 700; text-transform: uppercase; margin-bottom: 10px;">Enterprise Standard</div>
+      <h3 style="color: var(--dark-green);">Industrial Suite</h3>
+      <div style="font-size: 2.5rem; font-weight: 800; color: var(--dark-green); margin: 20px 0;">₹45,000<small style="font-size: 1rem;">/mo</small></div>
+      <ul style="list-style: none; padding: 0; margin-bottom: 30px; display: flex; flex-direction: column; gap: 10px; font-size: 0.9rem; color: var(--text-secondary);">
+        <li>Unlimited Dyeing Machine Monitoring</li>
+        <li>Color Matching Engine & Recipes Database</li>
+        <li>Real-time Factory Floor Map View</li>
+        <li>PDF & Excel Exporters with Custom Branding</li>
+        <li>24/7 Priority Support hotline</li>
+      </ul>
+      <a href="/register" class="btn btn-primary" style="width: 100%; justify-content: center;">Deploy Enterprise Node</a>
+    </div>
+  </div>
+</section>
+
+<!-- Request platform demo -->
+<section id="contact" style="padding: 80px 6%; border-top: 1px solid var(--border-color);" data-aos="fade-up">
+  <h2 style="font-family: 'Poppins', sans-serif; font-size: 2.2rem; text-align: center; color: var(--dark-green); margin-bottom: 40px;">Request Platform Demo</h2>
+  <div style="max-width: 650px; margin: 0 auto;" class="glass-card">
+    <form onsubmit="event.preventDefault(); showToast('Demo request registered! Our engineering team will contact you shortly.', 'success');">
+      <div class="form-group">
+        <label>Company Name</label>
+        <input type="text" class="form-field" required placeholder="Textile Industries Ltd">
+      </div>
+      <div class="form-group">
+        <label>Corporate Email</label>
+        <input type="email" class="form-field" required placeholder="contact@textile.com">
+      </div>
+      <div class="form-group">
+        <label>Message / Inquiries</label>
+        <textarea class="form-field" rows="4" placeholder="Detail your dyeing machine numbers and average monthly fabric throughput..."></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">
+        <i class="fa-regular fa-paper-plane"></i> Submit Demo Request
+      </button>
+    </form>
+  </div>
+</section>
+
+<!-- Newsletter & Footer -->
+<section style="padding: 60px 6%; background-color: var(--dark-green); color: white; text-align: center; border-top: 1px solid var(--border-color);">
+  <h3 style="font-family: 'Poppins', sans-serif; font-size: 1.8rem; margin-bottom: 10px;">Subscribe to TexTech Digest</h3>
+  <p style="opacity: 0.85; max-width: 600px; margin: 0 auto 25px auto;">Stay informed on chemical dosing updates, textile automation trends, and color matching research releases.</p>
+  <div style="max-width: 500px; margin: 0 auto; display: flex; gap: 10px;">
+    <input type="email" class="form-field" placeholder="Enter your email" style="background-color: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.2); color: white;">
+    <button class="btn btn-primary" onclick="showToast('Thank you for subscribing!', 'success')">Subscribe</button>
+  </div>
+  
+  <hr style="border: 0; border-top: 1px solid rgba(255,255,255,0.1); margin: 40px 0;">
+  
+  <p style="font-size: 0.85rem; opacity: 0.75;">&copy; 2026 TexColor ERP Systems Inc. All rights reserved. Precision Shading Modules.</p>
+</section>
+
+<!-- Interactive weave canvas logic + count up -->
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // 1. Canvas Weave Animation
+    const canvas = document.getElementById('textileCanvas');
+    if (canvas) {
+      const ctx = canvas.getContext('2d');
+      
+      function resizeCanvas() {
+        // Set canvas physical sizing matching CSS layout
+        canvas.width = canvas.offsetWidth;
+        canvas.height = canvas.offsetHeight;
+      }
+      
+      resizeCanvas();
+      window.addEventListener('resize', resizeCanvas);
+      
+      let phase = 0;
+      
+      function draw() {
+        const w = canvas.width;
+        const h = canvas.height;
+        ctx.clearRect(0, 0, w, h);
+        
+        // Solid background matching page theme
+        ctx.fillStyle = document.body.classList.contains('dark-mode') ? '#142316' : '#F5FFF5';
+        ctx.fillRect(0, 0, w, h);
+        
+        const threadSpacing = 16;
+        const numWarp = Math.ceil(w / threadSpacing);
+        const numWeft = Math.ceil(h / threadSpacing);
+        
+        phase += 0.015;
+        
+        // Draw warp threads (Vertical threads)
+        for (let i = 0; i < numWarp; i++) {
+          const x = i * threadSpacing;
+          const wave = Math.sin(phase + i * 0.4) * 4;
+          
+          // Emerald Green gradient
+          const grad = ctx.createLinearGradient(x + wave, 0, x + wave + 6, 0);
+          grad.addColorStop(0, '#047857');
+          grad.addColorStop(0.5, '#10b981');
+          grad.addColorStop(1, '#059669');
+          
+          ctx.fillStyle = grad;
+          ctx.fillRect(x + wave, 0, 6, h);
+        }
+        
+        // Draw weft threads (Horizontal threads)
+        for (let j = 0; j < numWeft; j++) {
+          const y = j * threadSpacing;
+          const wave = Math.cos(phase + j * 0.4) * 4;
+          
+          // Teal/Cyan gradient
+          const grad = ctx.createLinearGradient(0, y + wave, w, y + wave + 6);
+          grad.addColorStop(0, '#0891b2');
+          grad.addColorStop(0.5, '#06b6d4');
+          grad.addColorStop(1, '#0e7490');
+          
+          ctx.fillStyle = grad;
+          // Overlay opacity to simulate interlocking weaves
+          ctx.globalAlpha = 0.82;
+          ctx.fillRect(0, y + wave, w, 6);
+          ctx.globalAlpha = 1.0;
+        }
+        
+        requestAnimationFrame(draw);
+      }
+      draw();
+    }
+
+    // 2. Count-Up Logic for KPI Stats on Landing Page
+    function animateCountUp() {
+      const counters = document.querySelectorAll('.counter-num');
+      counters.forEach(counter => {
+        const target = parseFloat(counter.getAttribute('data-target'));
+        const isCurrency = counter.getAttribute('data-currency') === 'true';
+        const isPercentage = counter.getAttribute('data-percentage') === 'true';
+        const isPlus = counter.getAttribute('data-plus') === 'true';
+        
+        const duration = 1500; // 1.5 seconds
+        const startValue = 0;
+        const startTime = performance.now();
+        
+        function update(now) {
+          const elapsed = now - startTime;
+          const progress = Math.min(elapsed / duration, 1);
+          // Ease-out quadratic
+          const ease = progress * (2 - progress);
+          const current = target * ease;
+          
+          if (isCurrency) {
+            counter.innerText = '₹' + Math.floor(current).toLocaleString('en-IN');
+          } else if (isPercentage) {
+            counter.innerText = current.toFixed(1) + '%';
+          } else {
+            counter.innerText = Math.floor(current).toLocaleString() + (isPlus ? '+' : '');
+          }
+          
+          if (progress < 1) {
+            requestAnimationFrame(update);
+          } else {
+            if (isCurrency) {
+              counter.innerText = '₹' + target.toLocaleString('en-IN');
+            } else if (isPercentage) {
+              counter.innerText = target.toFixed(1) + '%';
+            } else {
+              counter.innerText = target.toLocaleString() + (isPlus ? '+' : '');
+            }
+          }
+        }
+        requestAnimationFrame(update);
+      });
+    }
+
+    // Intersection observer to trigger count-up
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          animateCountUp();
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.2 });
+
+    const countersSec = document.getElementById('counters');
+    if (countersSec) {
+      observer.observe(countersSec);
+    }
+  });
+</script>
+
+<%- include('partials/footer') %>

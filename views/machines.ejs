@@ -1,0 +1,65 @@
+<%- include('partials/header') %>
+
+<div class="erp-container">
+  <%- include('partials/sidebar') %>
+  
+  <main class="erp-main">
+    <header class="top-actions-bar">
+      <div class="top-bar-title">
+        <h1>Vessel Management Dashboard</h1>
+        <p>Monitor high-temperature dyeing chambers, scheduler status, and maintenance targets.</p>
+      </div>
+      <div>
+        <% if (user.role === 'Super Admin' || user.role === 'Factory Manager') { %>
+          <button class="btn btn-primary" onclick="openMachineModal()"><i class="fa-solid fa-circle-plus"></i> Register Machine</button>
+        <% } %>
+      </div>
+    </header>
+
+    <div class="machine-visual-grid animate-fade" id="machines-grid-container">
+      <!-- Loaded dynamically -->
+    </div>
+  </main>
+</div>
+
+<!-- Modal Add Machine -->
+<div class="modal-backdrop" id="machineModal">
+  <div class="modal-card" style="width: 100%; max-width: 500px; background-color: var(--white); padding: 35px; border-radius: var(--radius-md); position: relative; border: 1px solid var(--border-color);">
+    <button onclick="closeMachineModal()" style="position: absolute; top: 20px; right: 20px; border: none; background: none; font-size: 1.5rem; cursor: pointer; color: var(--text-secondary);">&times;</button>
+    <h3 style="font-family: 'Poppins', sans-serif; color: var(--dark-green); margin-bottom: 20px;">Register Dyeing Vessel</h3>
+    <form id="machineForm">
+      <div class="form-group">
+        <label for="mac-name">Machine Name Description</label>
+        <input type="text" id="mac-name" class="form-field" required placeholder="e.g. Thies Soft-flow Jet Vessel">
+      </div>
+      <div class="form-group">
+        <label for="mac-code">Machine Code ID</label>
+        <input type="text" id="mac-code" class="form-field" required placeholder="e.g. MC-THIES-02">
+      </div>
+      <div class="form-group" style="display: flex; gap: 15px;">
+        <div style="flex: 1;">
+          <label for="mac-capacity">Capacity Weight Limit (KG)</label>
+          <input type="number" id="mac-capacity" class="form-field" required min="1" placeholder="e.g. 500">
+        </div>
+        <div style="flex: 1;">
+          <label for="mac-status">Status state</label>
+          <select id="mac-status" class="form-field">
+            <option value="Available">Available</option>
+            <option value="Running">Running</option>
+            <option value="Maintenance">Maintenance</option>
+            <option value="Offline">Offline</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="mac-maintenance">Next Maintenance Deadline</label>
+        <input type="date" id="mac-maintenance" class="form-field" required>
+      </div>
+      <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">
+        <i class="fa-solid fa-floppy-disk"></i> Register Machine
+      </button>
+    </form>
+  </div>
+</div>
+
+<%- include('partials/footer') %>

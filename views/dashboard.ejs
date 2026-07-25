@@ -1,0 +1,103 @@
+<%- include('partials/header') %>
+
+<div class="erp-container">
+  <%- include('partials/sidebar') %>
+  
+  <main class="erp-main">
+    <header class="top-actions-bar">
+      <div class="top-bar-title">
+        <h1>TEXCOLOR Console</h1>
+        <p>Enterprise Resource Planning & Production control desk.</p>
+      </div>
+      <div style="display: flex; gap: 15px; align-items: center;">
+        <button class="btn btn-secondary" onclick="toggleNotificationDrawer()" id="notif-bell-btn" style="position: relative;">
+          <i class="fa-regular fa-bell"></i>
+          <span style="position: absolute; top: -3px; right: -3px; background-color: var(--danger); width: 8px; height: 8px; border-radius: 50%; display: none;" id="notif-dot"></span>
+        </button>
+        <button class="btn btn-primary" onclick="openCommandPalette()"><i class="fa-solid fa-terminal"></i> Command Palette (Ctrl+K)</button>
+      </div>
+    </header>
+
+    <!-- KPI Metric Cards Grid -->
+    <div class="kpi-wrapper-grid animate-fade">
+      <div class="kpi-metric-card">
+        <div>
+          <div class="metric-title">Monthly Orders</div>
+          <div class="metric-val" id="kpi-orders">0</div>
+        </div>
+        <div class="metric-icon-box"><i class="fa-solid fa-receipt"></i></div>
+      </div>
+      
+      <div class="kpi-metric-card">
+        <div>
+          <div class="metric-title">Active Batches</div>
+          <div class="metric-val" id="kpi-batches">0</div>
+        </div>
+        <div class="metric-icon-box" style="color: var(--info); background-color: rgba(0, 176, 255, 0.1);"><i class="fa-solid fa-hourglass-half"></i></div>
+      </div>
+
+      <div class="kpi-metric-card">
+        <div>
+          <div class="metric-title">Monthly Revenue</div>
+          <div class="metric-val" id="kpi-revenue">₹0</div>
+        </div>
+        <div class="metric-icon-box" style="color: var(--warning); background-color: rgba(255, 179, 0, 0.1);"><i class="fa-solid fa-indian-rupee-sign"></i></div>
+      </div>
+
+      <div class="kpi-metric-card">
+        <div>
+          <div class="metric-title">Shade Matching Precision</div>
+          <div class="metric-val" id="kpi-efficiency">99.4%</div>
+        </div>
+        <div class="metric-icon-box" style="color: var(--success); background-color: rgba(0, 200, 83, 0.1);"><i class="fa-solid fa-gauge-high"></i></div>
+      </div>
+    </div>
+
+    <!-- Charts Grid Area -->
+    <div class="charts-grid-layout animate-fade" style="animation-delay: 0.1s;">
+      <div class="glass-card">
+        <h3 style="margin-bottom: 20px; font-family: 'Poppins', sans-serif;"><i class="fa-solid fa-chart-column"></i> Fabric Throughput by Category (KG)</h3>
+        <div id="fabricThroughputChart" style="min-height: 250px;"></div>
+      </div>
+      <div class="glass-card">
+        <h3 style="margin-bottom: 20px; font-family: 'Poppins', sans-serif;"><i class="fa-solid fa-chart-pie"></i> Machine Allocation</h3>
+        <div id="machineAllocationChart" style="min-height: 250px;"></div>
+      </div>
+    </div>
+
+    <!-- Details Grid (Recent orders & alerts) -->
+    <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 30px;" class="animate-fade" style="animation-delay: 0.2s;">
+      <div class="table-panel">
+        <h3 style="margin-bottom: 20px; font-family: 'Poppins', sans-serif;"><i class="fa-solid fa-list-check"></i> Recent Orders</h3>
+        <div style="overflow-x: auto;">
+          <table class="erp-data-table">
+            <thead>
+              <tr>
+                <th>Order No</th>
+                <th>Customer</th>
+                <th>Fabric Details</th>
+                <th>Color</th>
+                <th>Qty (KG)</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="recent-orders-list">
+              <tr>
+                <td colspan="6" style="text-align: center; color: var(--text-secondary);">Querying records...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="glass-card">
+        <h3 style="margin-bottom: 20px; font-family: 'Poppins', sans-serif;"><i class="fa-solid fa-triangle-exclamation"></i> Warehouse Alerts</h3>
+        <div style="display: flex; flex-direction: column; gap: 15px;" id="inventory-alerts-list">
+          <p style="color: var(--text-secondary); font-size: 0.95rem;">All stock quantities balance above thresholds.</p>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<%- include('partials/footer') %>

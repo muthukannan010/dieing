@@ -1,0 +1,121 @@
+<%- include('partials/header') %>
+
+<div class="erp-container">
+  <%- include('partials/sidebar') %>
+  
+  <main class="erp-main">
+    <header class="top-actions-bar">
+      <div class="top-bar-title">
+        <h1>Warehouse Stock & Suppliers</h1>
+        <p>Manage chemicals inventory, log inward purchases, and alert low balances.</p>
+      </div>
+      <div style="display: flex; gap: 10px;">
+        <button class="btn btn-secondary" onclick="openSupplierModal()"><i class="fa-solid fa-users"></i> Register Supplier</button>
+        <button class="btn btn-primary" onclick="openInventoryModal()"><i class="fa-solid fa-circle-plus"></i> Add Stock Item</button>
+      </div>
+    </header>
+
+    <div class="table-panel animate-fade">
+      <h3 style="margin-bottom: 20px; font-family: 'Poppins', sans-serif; color: var(--dark-green);"><i class="fa-solid fa-warehouse"></i> Inventory Balance Sheets</h3>
+      <div style="overflow-x: auto;">
+        <table class="erp-data-table" id="inventory-table">
+          <thead>
+            <tr>
+              <th>Item Name</th>
+              <th>Category</th>
+              <th>Current Balance</th>
+              <th>Min Threshold</th>
+              <th>Supplier Link</th>
+              <th>Stock Adjustment</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="inventory-table-body">
+            <tr>
+              <td colspan="7" style="text-align: center; color: var(--text-secondary);">Querying inventory data...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- Modal Add/Edit Stock -->
+<div class="modal-backdrop" id="inventoryModal">
+  <div class="modal-card" style="width: 100%; max-width: 500px; background-color: var(--white); padding: 35px; border-radius: var(--radius-md); position: relative; border: 1px solid var(--border-color);">
+    <button onclick="closeInventoryModal()" style="position: absolute; top: 20px; right: 20px; border: none; background: none; font-size: 1.5rem; cursor: pointer; color: var(--text-secondary);">&times;</button>
+    <h3 style="font-family: 'Poppins', sans-serif; color: var(--dark-green); margin-bottom: 20px;">Add Stock Item</h3>
+    <form id="inventoryForm">
+      <div class="form-group">
+        <label for="inv-name">Item Name</label>
+        <input type="text" id="inv-name" class="form-field" required placeholder="e.g. Soda Ash dense">
+      </div>
+      <div class="form-group">
+        <label for="inv-type">Category</label>
+        <select id="inv-type" class="form-field">
+          <option value="Chemical">Chemical (Acid/Salt/Bleach)</option>
+          <option value="Dye">Dye Powder</option>
+          <option value="Fabric">Fabric Roll Greige</option>
+          <option value="Spare Parts">Spare Parts</option>
+        </select>
+      </div>
+      <div class="form-group" style="display: flex; gap: 15px;">
+        <div style="flex: 1;">
+          <label for="inv-qty">Initial Qty</label>
+          <input type="number" id="inv-qty" class="form-field" required min="0" placeholder="e.g. 500">
+        </div>
+        <div style="flex: 1;">
+          <label for="inv-unit">Unit</label>
+          <input type="text" id="inv-unit" class="form-field" required value="KG">
+        </div>
+      </div>
+      <div class="form-group" style="display: flex; gap: 15px;">
+        <div style="flex: 1;">
+          <label for="inv-threshold">Alert Threshold</label>
+          <input type="number" id="inv-threshold" class="form-field" required min="0" placeholder="e.g. 100">
+        </div>
+        <div style="flex: 1;">
+          <label for="inv-supplier">Supplier</label>
+          <select id="inv-supplier" class="form-field">
+            <option value="">-- Choose Supplier --</option>
+          </select>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">
+        <i class="fa-solid fa-floppy-disk"></i> Save Stock Item
+      </button>
+    </form>
+  </div>
+</div>
+
+<!-- Modal Register Supplier -->
+<div class="modal-backdrop" id="supplierModal">
+  <div class="modal-card" style="width: 100%; max-width: 500px; background-color: var(--white); padding: 35px; border-radius: var(--radius-md); position: relative; border: 1px solid var(--border-color);">
+    <button onclick="closeSupplierModal()" style="position: absolute; top: 20px; right: 20px; border: none; background: none; font-size: 1.5rem; cursor: pointer; color: var(--text-secondary);">&times;</button>
+    <h3 style="font-family: 'Poppins', sans-serif; color: var(--dark-green); margin-bottom: 20px;">Register Supplier</h3>
+    <form id="supplierForm">
+      <div class="form-group">
+        <label for="sup-name">Supplier Name</label>
+        <input type="text" id="sup-name" class="form-field" required placeholder="e.g. Huntsman Textile Chemicals">
+      </div>
+      <div class="form-group">
+        <label for="sup-contact">Contact Person</label>
+        <input type="text" id="sup-contact" class="form-field" placeholder="e.g. Sarah Connor">
+      </div>
+      <div class="form-group">
+        <label for="sup-phone">Contact Phone</label>
+        <input type="text" id="sup-phone" class="form-field" placeholder="e.g. +1555123">
+      </div>
+      <div class="form-group">
+        <label for="sup-email">Contact Email</label>
+        <input type="email" id="sup-email" class="form-field" placeholder="name@supplier.com">
+      </div>
+      <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">
+        <i class="fa-solid fa-floppy-disk"></i> Register Supplier
+      </button>
+    </form>
+  </div>
+</div>
+
+<%- include('partials/footer') %>

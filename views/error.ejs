@@ -1,0 +1,17 @@
+<%- include('partials/header') %>
+
+<div class="auth-wrapper">
+  <div class="auth-box glass-card animate-fade" style="text-align: center;">
+    <div style="margin-bottom: 30px;">
+      <i class="fa-solid fa-triangle-exclamation" style="font-size: 4rem; color: var(--danger); margin-bottom: 20px;"></i>
+      <h2 style="font-family: 'Poppins', sans-serif; color: var(--dark-green);">Forbidden Node</h2>
+      <p style="margin-top: 15px; color: var(--text-secondary);"><%= message %></p>
+    </div>
+
+    <a href="/dashboard" class="btn btn-primary">
+      <i class="fa-solid fa-arrow-left"></i> Return to Console
+    </a>
+  </div>
+</div>
+
+<%- include('partials/footer') %>

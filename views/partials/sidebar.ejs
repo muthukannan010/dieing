@@ -1,0 +1,122 @@
+<div class="floating-sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-brand">
+      <i class="fa-solid fa-industry"></i>
+      <span>TEXCOLOR ERP</span>
+    </div>
+  </div>
+
+  <ul class="sidebar-nav-list">
+    <% if (user.role !== 'Customer') { %>
+      <li class="sidebar-nav-item <%= page === 'dashboard' ? 'active' : '' %>">
+        <a href="/dashboard" class="sidebar-nav-link">
+          <i class="fa-solid fa-chart-line"></i>
+          <span>ERP Dashboard</span>
+        </a>
+      </li>
+    <% } %>
+
+    <% if (user.role === 'Customer' || user.role === 'Super Admin') { %>
+      <li class="sidebar-nav-item <%= page === 'customer-portal' ? 'active' : '' %>">
+        <a href="/customer-portal" class="sidebar-nav-link">
+          <i class="fa-solid fa-user-gear"></i>
+          <span>Customer Desk</span>
+        </a>
+      </li>
+    <% } %>
+
+    <li class="sidebar-nav-item <%= page === 'orders' ? 'active' : '' %>">
+      <a href="/orders" class="sidebar-nav-link">
+        <i class="fa-solid fa-receipt"></i>
+        <span>Orders Ledger</span>
+      </a>
+    </li>
+
+    <% if (user.role !== 'Customer') { %>
+      <li class="sidebar-nav-item <%= page === 'production' ? 'active' : '' %>">
+        <a href="/production" class="sidebar-nav-link">
+          <i class="fa-solid fa-helmet-safety"></i>
+          <span>Floor Scheduler</span>
+        </a>
+      </li>
+      
+      <li class="sidebar-nav-item <%= page === 'machines' ? 'active' : '' %>">
+        <a href="/machines" class="sidebar-nav-link">
+          <i class="fa-solid fa-server"></i>
+          <span>Machine Monitor</span>
+        </a>
+      </li>
+      
+      <li class="sidebar-nav-item <%= page === 'factory-map' ? 'active' : '' %>">
+        <a href="/factory-map" class="sidebar-nav-link">
+          <i class="fa-solid fa-map-location-dot"></i>
+          <span>Factory Floor Map</span>
+        </a>
+      </li>
+    <% } %>
+
+    <li class="sidebar-nav-item <%= page === 'calc-weight' ? 'active' : '' %>">
+      <a href="/calc-weight" class="sidebar-nav-link">
+        <i class="fa-solid fa-calculator"></i>
+        <span>Weight Calculator</span>
+      </a>
+    </li>
+
+    <li class="sidebar-nav-item <%= page === 'calc-chemical' ? 'active' : '' %>">
+      <a href="/calc-chemical" class="sidebar-nav-link">
+        <i class="fa-solid fa-flask-vial"></i>
+        <span>Chemical Doser</span>
+      </a>
+    </li>
+
+    <li class="sidebar-nav-item <%= page === 'colors' ? 'active' : '' %>">
+      <a href="/colors" class="sidebar-nav-link">
+        <i class="fa-solid fa-palette"></i>
+        <span>Color Matching</span>
+      </a>
+    </li>
+
+    <li class="sidebar-nav-item <%= page === 'recipes' ? 'active' : '' %>">
+      <a href="/recipes" class="sidebar-nav-link">
+        <i class="fa-solid fa-book-open"></i>
+        <span>Dye Recipes</span>
+      </a>
+    </li>
+
+    <% if (user.role !== 'Customer') { %>
+      <li class="sidebar-nav-item <%= page === 'inventory' ? 'active' : '' %>">
+        <a href="/inventory" class="sidebar-nav-link">
+          <i class="fa-solid fa-warehouse"></i>
+          <span>Warehouse Stock</span>
+        </a>
+      </li>
+
+      <li class="sidebar-nav-item <%= page === 'reports' ? 'active' : '' %>">
+        <a href="/reports" class="sidebar-nav-link">
+          <i class="fa-solid fa-file-export"></i>
+          <span>Analytics Reports</span>
+        </a>
+      </li>
+    <% } %>
+  </ul>
+
+  <div class="sidebar-profile">
+    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 15px;">
+      <div style="width: 38px; height: 38px; border-radius: 50%; background-color: var(--primary); color: white; display: flex; align-items: center; justify-content: center; font-weight: 700;">
+        <%= user.username.charAt(0).toUpperCase() %>
+      </div>
+      <div>
+        <div style="font-size: 0.9rem; font-weight: 700; color: var(--text-primary);"><%= user.username %></div>
+        <div class="user-role" style="font-size: 0.75rem; color: var(--primary); text-transform: uppercase; font-weight: 600;"><%= user.role %></div>
+      </div>
+    </div>
+    <div style="display: flex; gap: 8px;">
+      <button class="btn btn-secondary" onclick="toggleDarkMode()" style="padding: 8px 12px; font-size: 0.8rem;" title="Toggle Theme">
+        <i class="fa-regular fa-moon"></i>
+      </button>
+      <a href="/api/auth/logout" class="btn btn-secondary" style="flex: 1; padding: 8px 12px; justify-content: center; font-size: 0.8rem;">
+        <i class="fa-solid fa-sign-out"></i> Exit
+      </a>
+    </div>
+  </div>
+</div>
