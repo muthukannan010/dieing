@@ -21,53 +21,53 @@ router.post('/demo/seed', demoController.seedDatabase);
 router.use(authenticateJWT);
 
 // Dashboard stats
-router.get('/dashboard/stats', dashboardController.getDashboardStats);
+router.get('/dashboard/stats', authorizeRoles('Super Admin', 'Factory Manager', 'Production Supervisor', 'Inventory Manager', 'Machine Operator', 'Customer'), dashboardController.getDashboardStats);
 
 // Calculators
-router.post('/calculate/fabric', calculatorController.calculateFabricWeight);
-router.post('/calculate/chemical', calculatorController.calculateChemicalRequirement);
+router.post('/calculate/fabric', authorizeRoles('Super Admin', 'Factory Manager', 'Production Supervisor', 'Inventory Manager'), calculatorController.calculateFabricWeight);
+router.post('/calculate/chemical', authorizeRoles('Super Admin', 'Factory Manager', 'Production Supervisor', 'Inventory Manager'), calculatorController.calculateChemicalRequirement);
 
 // Color Matching
-router.get('/colors', colorController.getColorList);
-router.get('/colors/match', colorController.getColorMatchingDetails);
+router.get('/colors', authorizeRoles('Super Admin', 'Factory Manager', 'Production Supervisor'), colorController.getColorList);
+router.get('/colors/match', authorizeRoles('Super Admin', 'Factory Manager', 'Production Supervisor'), colorController.getColorMatchingDetails);
 
 // Recipe Management
-router.get('/recipes', recipeController.getAllRecipes);
+router.get('/recipes', authorizeRoles('Super Admin', 'Factory Manager', 'Production Supervisor'), recipeController.getAllRecipes);
 router.post('/recipes', authorizeRoles('Super Admin', 'Factory Manager', 'Production Supervisor'), recipeController.createRecipe);
 router.put('/recipes/:id', authorizeRoles('Super Admin', 'Factory Manager', 'Production Supervisor'), recipeController.updateRecipe);
 router.post('/recipes/:id/clone', authorizeRoles('Super Admin', 'Factory Manager', 'Production Supervisor'), recipeController.cloneRecipe);
 router.delete('/recipes/:id', authorizeRoles('Super Admin', 'Factory Manager', 'Production Supervisor'), recipeController.deleteRecipe);
 
 // Inventory Management
-router.get('/inventory', inventoryController.getInventoryData);
+router.get('/inventory', authorizeRoles('Super Admin', 'Factory Manager', 'Inventory Manager'), inventoryController.getInventoryData);
 router.post('/inventory', authorizeRoles('Super Admin', 'Factory Manager', 'Inventory Manager'), inventoryController.addInventoryItem);
 router.patch('/inventory/:id/adjust', authorizeRoles('Super Admin', 'Factory Manager', 'Inventory Manager', 'Production Supervisor'), inventoryController.adjustStock);
 router.delete('/inventory/:id', authorizeRoles('Super Admin', 'Factory Manager', 'Inventory Manager'), inventoryController.deleteInventoryItem);
 
 // Suppliers
-router.get('/suppliers', inventoryController.getAllSuppliers);
+router.get('/suppliers', authorizeRoles('Super Admin', 'Factory Manager', 'Inventory Manager'), inventoryController.getAllSuppliers);
 router.post('/suppliers', authorizeRoles('Super Admin', 'Factory Manager', 'Inventory Manager'), inventoryController.addSupplier);
 
 // Machine Management
-router.get('/machines', machineController.getMachines);
+router.get('/machines', authorizeRoles('Super Admin', 'Factory Manager', 'Production Supervisor', 'Machine Operator'), machineController.getMachines);
 router.post('/machines', authorizeRoles('Super Admin', 'Factory Manager'), machineController.addMachine);
-router.patch('/machines/:id/status', machineController.updateMachineStatus);
+router.patch('/machines/:id/status', authorizeRoles('Super Admin', 'Factory Manager', 'Production Supervisor', 'Machine Operator'), machineController.updateMachineStatus);
 router.delete('/machines/:id', authorizeRoles('Super Admin', 'Factory Manager'), machineController.deleteMachine);
 
 // Order Management
-router.get('/orders', orderController.getAllOrders);
+router.get('/orders', authorizeRoles('Super Admin', 'Factory Manager', 'Customer'), orderController.getAllOrders);
 router.post('/orders', authorizeRoles('Super Admin', 'Factory Manager', 'Customer'), orderController.createOrder);
 router.put('/orders/:id', authorizeRoles('Super Admin', 'Factory Manager'), orderController.updateOrder);
-router.patch('/orders/:id/status', orderController.updateOrderStatus);
+router.patch('/orders/:id/status', authorizeRoles('Super Admin', 'Factory Manager'), orderController.updateOrderStatus);
 router.delete('/orders/:id', authorizeRoles('Super Admin', 'Factory Manager'), orderController.deleteOrder);
 
 // Production Tracking
-router.get('/batches', productionController.getAllBatches);
+router.get('/batches', authorizeRoles('Super Admin', 'Factory Manager', 'Production Supervisor', 'Machine Operator'), productionController.getAllBatches);
 router.post('/batches', authorizeRoles('Super Admin', 'Factory Manager', 'Production Supervisor'), productionController.createBatch);
-router.patch('/batches/:id/status', productionController.updateBatchStatus);
-router.delete('/batches/:id', authorizeRoles('Super Admin', 'Factory Manager'), productionController.deleteBatch);
+router.patch('/batches/:id/status', authorizeRoles('Super Admin', 'Factory Manager', 'Production Supervisor', 'Machine Operator'), productionController.updateBatchStatus);
+router.delete('/batches/:id', authorizeRoles('Super Admin', 'Factory Manager', 'Production Supervisor'), productionController.deleteBatch);
 
 // Reports Module
-router.get('/reports', reportController.getReportsData);
+router.get('/reports', authorizeRoles('Super Admin', 'Factory Manager', 'Production Supervisor', 'Inventory Manager'), reportController.getReportsData);
 
 module.exports = router;

@@ -1,0 +1,112 @@
+<%- include('partials/header') %>
+
+<div class="erp-container">
+  <%- include('partials/sidebar') %>
+  
+  <main class="erp-main">
+    <header class="top-actions-bar">
+      <button class="mobile-menu-toggle" onclick="document.getElementById('appSidebar').classList.add('sidebar-mobile-open')">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+      <div class="top-bar-title">
+        <h1>Customer Dashboard</h1>
+        <p>Track your orders and production progress.</p>
+      </div>
+    </header>
+
+    <div class="kpi-wrapper-grid animate-fade">
+      <div class="kpi-metric-card">
+        <div>
+          <div class="metric-title">Active Orders</div>
+          <div class="metric-val" id="kpi-active-orders">0</div>
+        </div>
+        <div class="metric-icon-box"><i class="fa-solid fa-receipt"></i></div>
+      </div>
+      
+      <div class="kpi-metric-card">
+        <div>
+          <div class="metric-title">Production Progress</div>
+          <div class="metric-val" id="kpi-prod-progress">0%</div>
+        </div>
+        <div class="metric-icon-box" style="color: var(--info); background-color: rgba(0, 176, 255, 0.1);"><i class="fa-solid fa-spinner"></i></div>
+      </div>
+
+      <div class="kpi-metric-card">
+        <div>
+          <div class="metric-title">Pending Payments</div>
+          <div class="metric-val">₹0</div>
+        </div>
+        <div class="metric-icon-box" style="color: var(--warning); background-color: rgba(255, 179, 0, 0.1);"><i class="fa-solid fa-indian-rupee-sign"></i></div>
+      </div>
+    </div>
+
+    <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 30px;" class="animate-fade" style="animation-delay: 0.2s;">
+      <div class="table-panel">
+        <h3 style="margin-bottom: 20px; font-family: 'Poppins', sans-serif;"><i class="fa-solid fa-list-check"></i> My Recent Orders</h3>
+        <div style="overflow-x: auto;">
+          <table class="erp-data-table">
+            <thead>
+              <tr>
+                <th>Order No</th>
+                <th>Fabric Details</th>
+                <th>Color</th>
+                <th>Qty (KG)</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="customer-recent-orders-list">
+              <tr>
+                <td colspan="5" style="text-align: center; color: var(--text-secondary);">Querying records...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  
+
+<script>
+  document.addEventListener('DOMContentLoaded', async () => {
+    // Fetch stats for customer dashboard (using existing /api/dashboard/stats for now)
+    try {
+      const res = await fetch('/api/dashboard/stats');
+      const response = await res.json();
+      if (response.success) {
+        document.getElementById('kpi-active-orders').innerText = response.data.totalOrders;
+        document.getElementById('kpi-prod-progress').innerText = '45%'; // placeholder
+
+        const body = document.getElementById('customer-recent-orders-list');
+        body.innerHTML = '';
+        response.data.recentOrders.forEach(o => {
+          body.innerHTML += `
+            <tr>
+              <td><strong>${o.order_no}</strong></td>
+              <td>${o.fabric_type_name || 'N/A'}</td>
+              <td>${o.color_name}</td>
+              <td><strong>${o.quantity_kg.toLocaleString()} KG</strong></td>
+              <td><span class="status-badge status-${getStatusClass(o.status)}">${o.status}</span></td>
+            </tr>
+          `;
+        });
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  });
+
+  function getStatusClass(status) {
+    if (status === 'Pending') return 'pending';
+    if (status === 'Scheduled') return 'process';
+    if (status === 'Dyeing') return 'dyeing';
+    if (status === 'Washing') return 'process';
+    if (status === 'Drying') return 'process';
+    if (status === 'Quality Check') return 'qc';
+    if (status === 'Completed') return 'completed';
+    return 'delivered';
+  }
+</script>
+
+  </main>
+</div>
+
+<%- include('partials/footer') %>

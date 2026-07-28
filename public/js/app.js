@@ -897,7 +897,7 @@ async function loadMachines() {
               <option value="Maintenance" ${m.status === 'Maintenance' ? 'selected' : ''}>Maintenance</option>
               <option value="Offline" ${m.status === 'Offline' ? 'selected' : ''}>Offline</option>
             </select>
-            <button class="action-btn btn-delete" style="color: var(--danger);" onclick="deleteMachine(${m.id})"><i class="fa-solid fa-trash-can"></i></button>
+            ${['Super Admin', 'Factory Manager'].includes(window.USER_ROLE) ? `<button class="action-btn btn-delete" style="color: var(--danger);" onclick="deleteMachine(${m.id})"><i class="fa-solid fa-trash-can"></i></button>` : ''}
           </div>
         </div>
       `;
@@ -1009,12 +1009,18 @@ async function loadOrders() {
 
     body.innerHTML = '';
     orders.forEach(o => {
-      let actionHTML = `
-        <td class="table-actions">
-          <button class="action-btn btn-edit" onclick="editOrder(${JSON.stringify(o).replace(/"/g, '&quot;')})" title="Edit"><i class="fa-solid fa-pen-to-square"></i></button>
-          <button class="action-btn btn-delete" onclick="deleteOrder(${o.id})" title="Delete"><i class="fa-solid fa-trash-can"></i></button>
-        </td>
-      `;
+      let actionHTML = '';
+      if (['Super Admin', 'Factory Manager', 'Customer'].includes(window.USER_ROLE)) {
+        actionHTML += `<button class="action-btn btn-edit" onclick="editOrder(${JSON.stringify(o).replace(/"/g, '&quot;')})" title="Edit"><i class="fa-solid fa-pen-to-square"></i></button>`;
+      }
+      if (['Super Admin', 'Factory Manager'].includes(window.USER_ROLE)) {
+        actionHTML += `<button class="action-btn btn-delete" onclick="deleteOrder(${o.id})" title="Delete"><i class="fa-solid fa-trash-can"></i></button>`;
+      }
+      if (actionHTML !== '') {
+        actionHTML = `<td class="table-actions">${actionHTML}</td>`;
+      } else {
+        actionHTML = `<td></td>`;
+      }
 
       body.innerHTML += `
         <tr>
@@ -1205,7 +1211,7 @@ async function loadProduction() {
                 <option value="Dyeing" ${b.status === 'Dyeing' ? 'selected' : ''}>Dyeing</option>
                 <option value="Completed" ${b.status === 'Completed' ? 'selected' : ''}>Completed</option>
               </select>
-              <button class="action-btn btn-delete" style="color: var(--danger);" onclick="deleteBatch(${b.id})"><i class="fa-solid fa-trash-can"></i></button>
+              ${['Super Admin', 'Factory Manager', 'Production Supervisor'].includes(window.USER_ROLE) ? `<button class="action-btn btn-delete" style="color: var(--danger);" onclick="deleteBatch(${b.id})"><i class="fa-solid fa-trash-can"></i></button>` : ''}
             </div>
           </td>
         </tr>

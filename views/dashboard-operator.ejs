@@ -1,0 +1,84 @@
+<%- include('partials/header') %>
+
+<div class="erp-container">
+  <%- include('partials/sidebar') %>
+  
+  <main class="erp-main">
+    <header class="top-actions-bar">
+      <button class="mobile-menu-toggle" onclick="document.getElementById('appSidebar').classList.add('sidebar-mobile-open')">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+      <div class="top-bar-title">
+        <h1>Operator Dashboard</h1>
+        <p>Manage your assigned machines and active batches.</p>
+      </div>
+    </header>
+
+    <div class="kpi-wrapper-grid animate-fade">
+      <div class="kpi-metric-card">
+        <div>
+          <div class="metric-title">Assigned Machines</div>
+          <div class="metric-val">2</div>
+        </div>
+        <div class="metric-icon-box"><i class="fa-solid fa-server"></i></div>
+      </div>
+      
+      <div class="kpi-metric-card">
+        <div>
+          <div class="metric-title">Running Jobs</div>
+          <div class="metric-val" id="kpi-active-batches">0</div>
+        </div>
+        <div class="metric-icon-box" style="color: var(--info); background-color: rgba(0, 176, 255, 0.1);"><i class="fa-solid fa-hourglass-half"></i></div>
+      </div>
+
+      <div class="kpi-metric-card">
+        <div>
+          <div class="metric-title">Maintenance Alerts</div>
+          <div class="metric-val" style="color: var(--danger)">0</div>
+        </div>
+        <div class="metric-icon-box" style="color: var(--danger); background-color: rgba(213, 0, 0, 0.1);"><i class="fa-solid fa-triangle-exclamation"></i></div>
+      </div>
+    </div>
+
+    <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 30px;" class="animate-fade" style="animation-delay: 0.2s;">
+      <div class="table-panel">
+        <h3 style="margin-bottom: 20px; font-family: 'Poppins', sans-serif;"><i class="fa-solid fa-list-check"></i> Running Batches</h3>
+        <div style="overflow-x: auto;">
+          <table class="erp-data-table">
+            <thead>
+              <tr>
+                <th>Batch No</th>
+                <th>Machine</th>
+                <th>Recipe</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="operator-running-batches">
+              <tr>
+                <td colspan="4" style="text-align: center; color: var(--text-secondary);">No running batches</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  
+
+<script>
+  document.addEventListener('DOMContentLoaded', async () => {
+    try {
+      const res = await fetch('/api/dashboard/stats');
+      const response = await res.json();
+      if (response.success) {
+        document.getElementById('kpi-active-batches').innerText = response.data.activeBatches;
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  });
+</script>
+
+  </main>
+</div>
+
+<%- include('partials/footer') %>

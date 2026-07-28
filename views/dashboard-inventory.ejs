@@ -1,0 +1,102 @@
+<%- include('partials/header') %>
+
+<div class="erp-container">
+  <%- include('partials/sidebar') %>
+  
+  <main class="erp-main">
+    <header class="top-actions-bar">
+      <button class="mobile-menu-toggle" onclick="document.getElementById('appSidebar').classList.add('sidebar-mobile-open')">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+      <div class="top-bar-title">
+        <h1>Inventory Dashboard</h1>
+        <p>Monitor warehouse stocks, low stock alerts, and suppliers.</p>
+      </div>
+    </header>
+
+    <div class="kpi-wrapper-grid animate-fade">
+      <div class="kpi-metric-card">
+        <div>
+          <div class="metric-title">Low Stock Alerts</div>
+          <div class="metric-val" id="kpi-low-stock" style="color: var(--danger)">0</div>
+        </div>
+        <div class="metric-icon-box" style="color: var(--danger); background-color: rgba(213, 0, 0, 0.1);"><i class="fa-solid fa-triangle-exclamation"></i></div>
+      </div>
+      
+      <div class="kpi-metric-card">
+        <div>
+          <div class="metric-title">Chemical Stock</div>
+          <div class="metric-val" id="kpi-chemical-stock">...</div>
+        </div>
+        <div class="metric-icon-box" style="color: var(--info); background-color: rgba(0, 176, 255, 0.1);"><i class="fa-solid fa-flask"></i></div>
+      </div>
+
+      <div class="kpi-metric-card">
+        <div>
+          <div class="metric-title">Dye Stock</div>
+          <div class="metric-val" id="kpi-dye-stock">...</div>
+        </div>
+        <div class="metric-icon-box" style="color: var(--warning); background-color: rgba(255, 179, 0, 0.1);"><i class="fa-solid fa-palette"></i></div>
+      </div>
+    </div>
+
+    <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 30px;" class="animate-fade" style="animation-delay: 0.2s;">
+      <div class="table-panel">
+        <h3 style="margin-bottom: 20px; font-family: 'Poppins', sans-serif;"><i class="fa-solid fa-list-check"></i> Recent Purchase Orders</h3>
+        <div style="overflow-x: auto;">
+          <table class="erp-data-table">
+            <thead>
+              <tr>
+                <th>PO Number</th>
+                <th>Supplier</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="inventory-po-list">
+              <tr>
+                <td colspan="3" style="text-align: center; color: var(--text-secondary);">No active POs</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="glass-card">
+        <h3 style="margin-bottom: 20px; font-family: 'Poppins', sans-serif;"><i class="fa-solid fa-triangle-exclamation"></i> Warehouse Alerts</h3>
+        <div style="display: flex; flex-direction: column; gap: 15px;" id="inventory-alerts-list">
+          <p style="color: var(--text-secondary); font-size: 0.95rem;">All stock quantities balance above thresholds.</p>
+        </div>
+      </div>
+    </div>
+  
+
+<script>
+  document.addEventListener('DOMContentLoaded', async () => {
+    try {
+      const res = await fetch('/api/dashboard/stats');
+      const response = await res.json();
+      if (response.success) {
+        const d = response.data;
+        document.getElementById('kpi-low-stock').innerText = d.lowStockAlerts;
+
+        const alertsBox = document.getElementById('inventory-alerts-list');
+        if (d.lowStockAlerts > 0) {
+          alertsBox.innerHTML = `
+            <div style="background-color: rgba(213,0,0,0.05); padding: 15px; border-radius: var(--radius-sm); border: 1px solid var(--danger);">
+              <strong style="color: var(--danger);"><i class="fa-solid fa-triangle-exclamation"></i> Low Stock Warning</strong>
+              <p style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 5px;">There are currently ${d.lowStockAlerts} items below safety limits.</p>
+              <a href="/inventory" class="btn btn-secondary" style="margin-top: 10px; padding: 6px 12px; font-size: 0.8rem;">Adjust Stock</a>
+            </div>
+          `;
+        }
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  });
+</script>
+
+  </main>
+</div>
+
+<%- include('partials/footer') %>

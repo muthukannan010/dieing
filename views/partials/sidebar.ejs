@@ -10,32 +10,23 @@
   </div>
 
   <ul class="sidebar-nav-list">
-    <% if (user.role !== 'Customer') { %>
-      <li class="sidebar-nav-item <%= page === 'dashboard' ? 'active' : '' %>">
-        <a href="/dashboard" class="sidebar-nav-link">
-          <i class="fa-solid fa-chart-line"></i>
-          <span>ERP Dashboard</span>
-        </a>
-      </li>
-    <% } %>
+    <li class="sidebar-nav-item <%= page === 'dashboard' ? 'active' : '' %>">
+      <a href="/dashboard" class="sidebar-nav-link">
+        <i class="fa-solid fa-chart-line"></i>
+        <span>ERP Dashboard</span>
+      </a>
+    </li>
 
-    <% if (user.role === 'Customer' || user.role === 'Super Admin') { %>
-      <li class="sidebar-nav-item <%= page === 'customer-portal' ? 'active' : '' %>">
-        <a href="/customer-portal" class="sidebar-nav-link">
-          <i class="fa-solid fa-user-gear"></i>
-          <span>Customer Desk</span>
-        </a>
-      </li>
-    <% } %>
-
+    <% if (['Super Admin', 'Factory Manager', 'Customer'].includes(user.role)) { %>
     <li class="sidebar-nav-item <%= page === 'orders' ? 'active' : '' %>">
       <a href="/orders" class="sidebar-nav-link">
         <i class="fa-solid fa-receipt"></i>
         <span>Orders Ledger</span>
       </a>
     </li>
+    <% } %>
 
-    <% if (user.role !== 'Customer') { %>
+    <% if (['Super Admin', 'Factory Manager', 'Production Supervisor', 'Machine Operator'].includes(user.role)) { %>
       <li class="sidebar-nav-item <%= page === 'production' ? 'active' : '' %>">
         <a href="/production" class="sidebar-nav-link">
           <i class="fa-solid fa-helmet-safety"></i>
@@ -58,6 +49,7 @@
       </li>
     <% } %>
 
+    <% if (['Super Admin', 'Factory Manager', 'Production Supervisor', 'Inventory Manager'].includes(user.role)) { %>
     <li class="sidebar-nav-item <%= page === 'calc-weight' ? 'active' : '' %>">
       <a href="/calc-weight" class="sidebar-nav-link">
         <i class="fa-solid fa-calculator"></i>
@@ -71,7 +63,9 @@
         <span>Chemical Doser</span>
       </a>
     </li>
+    <% } %>
 
+    <% if (['Super Admin', 'Factory Manager', 'Production Supervisor'].includes(user.role)) { %>
     <li class="sidebar-nav-item <%= page === 'colors' ? 'active' : '' %>">
       <a href="/colors" class="sidebar-nav-link">
         <i class="fa-solid fa-palette"></i>
@@ -85,15 +79,18 @@
         <span>Dye Recipes</span>
       </a>
     </li>
+    <% } %>
 
-    <% if (user.role !== 'Customer') { %>
+    <% if (['Super Admin', 'Factory Manager', 'Inventory Manager'].includes(user.role)) { %>
       <li class="sidebar-nav-item <%= page === 'inventory' ? 'active' : '' %>">
         <a href="/inventory" class="sidebar-nav-link">
           <i class="fa-solid fa-warehouse"></i>
           <span>Warehouse Stock</span>
         </a>
       </li>
+    <% } %>
 
+    <% if (['Super Admin', 'Factory Manager', 'Production Supervisor', 'Inventory Manager'].includes(user.role)) { %>
       <li class="sidebar-nav-item <%= page === 'reports' ? 'active' : '' %>">
         <a href="/reports" class="sidebar-nav-link">
           <i class="fa-solid fa-file-export"></i>
