@@ -1348,6 +1348,59 @@ h4 { font-size: clamp(18px, 2.5vw, 24px); }
   }
 }
 
+/* Landing Page Mobile Fixes */
+@media screen and (max-width: 992px) {
+  .counters-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+  .hero-sec {
+    flex-direction: column !important;
+    padding: 80px 4% 40px 4% !important;
+    text-align: center;
+  }
+  .hero-content {
+    max-width: 100% !important;
+  }
+  .hero-title {
+    font-size: 2.8rem !important;
+  }
+  .hero-content > div {
+    justify-content: center;
+  }
+  .sticky-nav {
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: center;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .counters-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .nav-links {
+    display: none !important;
+  }
+  .sticky-nav {
+    flex-direction: column;
+    padding: 15px 4%;
+  }
+  .action-buttons {
+    width: 100%;
+    justify-content: center;
+  }
+  .action-buttons .btn {
+    width: 100%;
+    justify-content: center;
+  }
+  .hero-title {
+    font-size: 2.2rem !important;
+  }
+  .illustrator-card {
+    height: 250px !important;
+  }
+}
+
 /* Ensure images are responsive */
 img {
   max-width: 100%;
