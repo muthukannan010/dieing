@@ -82,10 +82,20 @@ function searchCommands() {
 }
 
 // ---------------------------------------------
-// Document Init Routing
+// Document Init Routing & SPA Engine
 // ---------------------------------------------
-document.addEventListener('DOMContentLoaded', () => {
-  const path = window.location.pathname;
+
+function handleRoute(path) {
+  setTimeout(initResponsiveTables, 100);
+  // Reset any global states or UI classes for active sidebar item
+  document.querySelectorAll('.sidebar-nav-item').forEach(item => {
+    item.classList.remove('active');
+  });
+  
+  const navLink = document.querySelector(`.sidebar-nav-link[href="${path}"]`);
+  if (navLink) {
+    navLink.parentElement.classList.add('active');
+  }
 
   // Init Auth handlers
   initAuthForms();
@@ -111,6 +121,97 @@ document.addEventListener('DOMContentLoaded', () => {
   } else if (path === '/production') {
     loadProduction();
   }
+}
+
+function initSPA() {
+  document.body.addEventListener('click', async (e) => {
+    const link = e.target.closest('a.sidebar-nav-link, a.spa-link');
+    if (link && link.href && link.origin === window.location.origin) {
+      e.preventDefault();
+      const url = link.href;
+      const path = link.pathname;
+      
+      if (path === window.location.pathname) return;
+
+      // Visual indicator for loading
+      document.body.style.opacity = '0.7';
+      document.body.style.pointerEvents = 'none';
+
+      try {
+        const response = await fetch(url);
+        const html = await response.text();
+        
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(html, 'text/html');
+        
+        const newMain = doc.querySelector('.erp-main');
+        const currentMain = document.querySelector('.erp-main');
+        
+        if (newMain && currentMain) {
+          currentMain.innerHTML = newMain.innerHTML;
+          window.history.pushState({ path: path }, '', url);
+          document.title = doc.title;
+          
+          // Re-initialize page scripts
+          handleRoute(path);
+          
+          // Close mobile sidebar if open
+          const sidebar = document.querySelector('.floating-sidebar');
+          if (sidebar && sidebar.classList.contains('sidebar-mobile-open')) {
+            sidebar.classList.remove('sidebar-mobile-open');
+          }
+        } else {
+          // Fallback if structure is wrong
+          window.location.href = url;
+        }
+      } catch (err) {
+        console.error('SPA Navigation failed:', err);
+        window.location.href = url; // Fallback to full reload
+      } finally {
+        document.body.style.opacity = '1';
+        document.body.style.pointerEvents = 'auto';
+      }
+    }
+  });
+
+  window.addEventListener('popstate', async (e) => {
+    // Handle back/forward buttons
+    const url = window.location.href;
+    const path = window.location.pathname;
+    
+    document.body.style.opacity = '0.7';
+    document.body.style.pointerEvents = 'none';
+
+    try {
+      const response = await fetch(url);
+      const html = await response.text();
+      
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(html, 'text/html');
+      
+      const newMain = doc.querySelector('.erp-main');
+      const currentMain = document.querySelector('.erp-main');
+      
+      if (newMain && currentMain) {
+        currentMain.innerHTML = newMain.innerHTML;
+        document.title = doc.title;
+        handleRoute(path);
+      } else {
+        window.location.reload();
+      }
+    } catch (err) {
+      window.location.reload();
+    } finally {
+      document.body.style.opacity = '1';
+      document.body.style.pointerEvents = 'auto';
+    }
+  });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const path = window.location.pathname;
+  handleRoute(path);
+  initSPA();
 });
 
 // Authentication Forms
@@ -1414,3 +1515,24 @@ async function exportReportToExcel() {
   
   showToast('Excel spreadsheet downloaded.', 'success');
 }
+
+
+// Responsive Table Auto-Labeler
+function initResponsiveTables() {
+  const tables = document.querySelectorAll('.erp-data-table');
+  tables.forEach(table => {
+    const headers = Array.from(table.querySelectorAll('thead th')).map(th => th.innerText.trim());
+    const rows = table.querySelectorAll('tbody tr');
+    rows.forEach(row => {
+      const cells = row.querySelectorAll('td');
+      cells.forEach((cell, index) => {
+        if (headers[index] && !cell.hasAttribute('colspan')) {
+          cell.setAttribute('data-label', headers[index]);
+        }
+      });
+    });
+  });
+}
+
+// Call this inside handleRoute
+document.addEventListener('DOMContentLoaded', initResponsiveTables);

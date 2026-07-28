@@ -1143,3 +1143,214 @@ body.dark-mode .factory-floor {
   z-index: 1;
 }
 
+
+
+/* =========================================================================
+   RESPONSIVE DESIGN (MOBILE, TABLET, LAPTOP)
+   ========================================================================= */
+
+/* Desktop Base Typography (already set in body, adjusting for responsiveness) */
+h1 { font-size: clamp(34px, 4vw, 48px); }
+h2 { font-size: clamp(28px, 3.5vw, 40px); }
+h3 { font-size: clamp(22px, 3vw, 32px); }
+h4 { font-size: clamp(18px, 2.5vw, 24px); }
+
+/* Hide mobile elements on desktop */
+.mobile-sidebar-close {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: var(--text-secondary);
+  cursor: pointer;
+}
+.mobile-menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: var(--text-primary);
+  cursor: pointer;
+  padding: 8px;
+}
+
+/* Base Responsive Container for tables */
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Tablet & Smaller Laptops (max-width: 1024px) */
+@media (max-width: 1024px) {
+  /* Hide sidebar, make it accessible via hamburger */
+  .floating-sidebar {
+    position: fixed;
+    top: 0;
+    left: -300px;
+    height: 100vh;
+    z-index: 1000;
+    transition: left 0.3s ease;
+    box-shadow: var(--shadow-lg);
+  }
+  .floating-sidebar.sidebar-mobile-open {
+    left: 0;
+  }
+  
+  .erp-main {
+    margin-left: 0;
+    padding: 20px;
+  }
+
+  .mobile-menu-toggle {
+    display: inline-block;
+    margin-right: 15px;
+  }
+  .mobile-sidebar-close {
+    display: inline-block;
+  }
+  
+  .top-actions-bar {
+    justify-content: flex-start;
+  }
+  .top-bar-title {
+    margin-right: auto;
+  }
+
+  /* 2 KPI Cards per row */
+  .kpi-wrapper-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* Stack charts */
+  .charts-grid-layout {
+    grid-template-columns: 1fr;
+  }
+
+  /* details grid */
+  main.erp-main > div[style*="display: grid"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Form Grid */
+  .form-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* Large Mobile / Small Tablet (max-width: 767px) */
+@media (max-width: 767px) {
+  /* 1 KPI Card per row */
+  .kpi-wrapper-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Responsive Table: Card View */
+  .erp-data-table thead {
+    display: none;
+  }
+  .erp-data-table tbody tr {
+    display: block;
+    margin-bottom: 15px;
+    background: var(--white);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow-sm);
+    padding: 10px;
+  }
+  .dark-mode .erp-data-table tbody tr {
+    background: var(--glass-bg);
+  }
+  .erp-data-table tbody td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border-color);
+    padding: 10px 5px;
+  }
+  .erp-data-table tbody td:last-child {
+    border-bottom: none;
+  }
+  .erp-data-table tbody td::before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: var(--text-secondary);
+  }
+
+  /* Top bar layout adjustments */
+  .top-actions-bar {
+    flex-wrap: wrap;
+    gap: 15px;
+  }
+  .top-bar-title p {
+    display: none; /* Hide subtitle to save space */
+  }
+
+  /* Modals */
+  .modal-card {
+    width: 95%;
+    max-height: 90vh;
+    padding: 20px;
+    border-radius: var(--radius-sm);
+  }
+
+  /* Landing Page */
+  .hero-sec {
+    flex-direction: column;
+    text-align: center;
+    padding: 80px 5% 40px 5%;
+  }
+  .hero-actions {
+    justify-content: center;
+  }
+  .nav-links {
+    display: none; /* Can be moved to hamburger in future */
+  }
+}
+
+/* Mobile Devices (max-width: 480px) */
+@media (max-width: 480px) {
+  /* Larger touch targets */
+  .btn, .action-btn {
+    min-height: 48px;
+    padding: 12px 16px;
+    width: 100%;
+    justify-content: center;
+  }
+  .table-actions {
+    flex-direction: column;
+    gap: 10px;
+  }
+  .table-actions .action-btn {
+    width: 100%;
+    min-height: 48px;
+  }
+
+  /* Modal to Bottom Sheet */
+  .modal-card {
+    width: 100%;
+    margin-top: auto;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+  .modal-overlay {
+    align-items: flex-end;
+  }
+
+  /* Forms */
+  .form-field, select.form-field, input.form-field, textarea.form-field {
+    font-size: 16px; /* Prevents iOS zoom */
+    min-height: 48px;
+  }
+}
+
+/* Ensure images are responsive */
+img {
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
+}

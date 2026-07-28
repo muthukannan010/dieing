@@ -1,9 +1,12 @@
-<div class="floating-sidebar">
+<div class="floating-sidebar" id="appSidebar">
   <div class="sidebar-logo">
     <div class="logo-brand">
       <i class="fa-solid fa-industry"></i>
       <span>TEXCOLOR ERP</span>
     </div>
+    <button class="mobile-sidebar-close" onclick="document.getElementById('appSidebar').classList.remove('sidebar-mobile-open')">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
   </div>
 
   <ul class="sidebar-nav-list">
