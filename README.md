@@ -51,24 +51,6 @@ Built using the **MVC architecture**, the platform provides secure authenticatio
 
 ---
 
-# 🖥️ Screenshots
-
-> Add screenshots after deployment.
-
-| Landing Page | Dashboard |
-|--------------|-----------|
-| ![](docs/screenshots/home.png) | ![](docs/screenshots/dashboard.png) |
-
-| Orders | Production |
-|--------|------------|
-| ![](docs/screenshots/orders.png) | ![](docs/screenshots/production.png) |
-
-| Inventory | Reports |
-|-----------|---------|
-| ![](docs/screenshots/inventory.png) | ![](docs/screenshots/reports.png) |
-
----
-
 # 🏗️ System Architecture
 
 ```text
