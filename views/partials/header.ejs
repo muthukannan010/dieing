@@ -39,11 +39,7 @@
   <!-- App Stylesheet -->
   <link rel="stylesheet" href="/css/style.css">
   <script>
-    <% if (typeof user !== 'undefined' && user) { %>
-      window.USER_ROLE = '<%= user.role %>';
-    <% } else { %>
-      window.USER_ROLE = 'Guest';
-    <% } %>
+    window.USER_ROLE = "<%- (typeof user !== 'undefined' && user) ? user.role : 'Guest' %>";
   </script>
 </head>
 <body>

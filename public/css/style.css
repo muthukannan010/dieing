@@ -372,6 +372,24 @@ a {
 .sidebar-logo {
   padding: 30px 25px;
   border-bottom: 1px solid var(--border-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.mobile-sidebar-close {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: var(--text-secondary);
+  cursor: pointer;
+}
+
+@media (max-width: 1024px) {
+  .mobile-sidebar-close {
+    display: block;
+  }
 }
 
 .sidebar-nav-list {
@@ -428,9 +446,19 @@ a {
     width: 0;
     overflow: hidden;
   }
+  .floating-sidebar.sidebar-mobile-open {
+    width: 270px;
+    box-shadow: var(--shadow-lg);
+  }
   .erp-main {
     margin-left: 0;
     padding: 20px;
+  }
+  .mobile-menu-toggle {
+    display: block;
+  }
+  .mobile-sidebar-close {
+    display: block;
   }
 }
 
@@ -440,6 +468,22 @@ a {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 40px;
+  gap: 15px;
+}
+
+.mobile-menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: var(--dark-green);
+  cursor: pointer;
+}
+
+@media (max-width: 1024px) {
+  .mobile-menu-toggle {
+    display: block;
+  }
 }
 
 .top-bar-title h1 {
