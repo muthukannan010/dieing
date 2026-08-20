@@ -1451,3 +1451,19 @@ img {
   height: auto;
   object-fit: contain;
 }
+
+/* Authentication Back Home Button */
+.back-home-btn {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  z-index: 10;
+}
+
+@media (max-width: 480px) {
+  .back-home-btn {
+    width: auto !important;
+    min-height: 40px !important;
+    padding: 8px 16px !important;
+  }
+}
