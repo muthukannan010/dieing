@@ -1,4 +1,5 @@
 const { supabase } = require('../config/db');
+const { sendOrderStatusEmail } = require('../services/notificationService');
 
 exports.getAllOrders = async (req, res) => {
   try {
@@ -99,6 +100,16 @@ exports.createOrder = async (req, res) => {
       action: `Created new order: ${order_no}`
     });
 
+    // Send notification
+    try {
+      const { data: customerData } = await supabase.from('customers').select('name, email').eq('id', customer_id).single();
+      if (customerData && customerData.email) {
+        await sendOrderStatusEmail(customerData.name, customerData.email, order_no, 'Pending');
+      }
+    } catch (notifyErr) {
+      console.error('Failed to send order creation notification:', notifyErr);
+    }
+
     res.status(201).json({ success: true, message: 'Order created successfully.', orderId: result?.id });
   } catch (error) {
     console.error('Create order error:', error);
@@ -128,6 +139,17 @@ exports.updateOrder = async (req, res) => {
       .eq('id', id);
 
     if (error) throw error;
+    
+    // Send notification on update
+    try {
+      const { data: orderData } = await supabase.from('orders').select('order_no, customers(name, email)').eq('id', id).single();
+      if (orderData && orderData.customers && orderData.customers.email) {
+        await sendOrderStatusEmail(orderData.customers.name, orderData.customers.email, orderData.order_no, status);
+      }
+    } catch (notifyErr) {
+      console.error('Failed to send order update notification:', notifyErr);
+    }
+
     res.json({ success: true, message: 'Order details updated successfully.' });
   } catch (error) {
     console.error('Update order error:', error);
@@ -146,6 +168,17 @@ exports.updateOrderStatus = async (req, res) => {
       .eq('id', id);
 
     if (error) throw error;
+    
+    // Send notification on status update
+    try {
+      const { data: orderData } = await supabase.from('orders').select('order_no, customers(name, email)').eq('id', id).single();
+      if (orderData && orderData.customers && orderData.customers.email) {
+        await sendOrderStatusEmail(orderData.customers.name, orderData.customers.email, orderData.order_no, status);
+      }
+    } catch (notifyErr) {
+      console.error('Failed to send order status update notification:', notifyErr);
+    }
+    
     res.json({ success: true, message: 'Order status updated successfully.' });
   } catch (error) {
     console.error('Update status error:', error);

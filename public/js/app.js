@@ -1146,6 +1146,23 @@ function generateRoutingTag(orderNo) {
   document.getElementById('qrModal').style.display = 'flex';
 }
 
+function generateBatchTag(batchNo) {
+  const container = document.getElementById('qrcode-container');
+  container.innerHTML = '';
+  
+  new QRCode(container, {
+    text: `TEXCOLOR-BATCH-TAG:${batchNo}`,
+    width: 150,
+    height: 150,
+    colorDark : "#1B1B1B",
+    colorLight : "#F5FFF5",
+    correctLevel : QRCode.CorrectLevel.H
+  });
+
+  document.getElementById('qrModalText').innerText = `Production Batch Tag for ${batchNo}. Scan to verify machine loading.`;
+  document.getElementById('qrModal').style.display = 'flex';
+}
+
 function closeQrModal() {
   document.getElementById('qrModal').style.display = 'none';
 }
@@ -1206,6 +1223,9 @@ async function loadProduction() {
           <td><span class="status-badge status-${getStatusClass(b.status)}">${b.status}</span></td>
           <td>
             <div style="display: flex; gap: 5px;">
+              <button class="btn btn-secondary" style="padding: 4px 10px; font-size: 0.75rem;" onclick="generateBatchTag('${b.batch_no}')">
+                <i class="fa-solid fa-qrcode"></i> Tag
+              </button>
               <select class="form-field" style="padding: 5px 8px; font-size: 0.8rem; width: auto;" onchange="updateBatchStatus(${b.id}, this.value)">
                 <option value="In Process" ${b.status === 'In Process' ? 'selected' : ''}>In Process</option>
                 <option value="Dyeing" ${b.status === 'Dyeing' ? 'selected' : ''}>Dyeing</option>
