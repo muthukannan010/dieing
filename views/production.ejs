@@ -84,4 +84,14 @@
   </main>
 </div>
 
+<!-- QR Modal Container -->
+<div class="modal-backdrop" id="qrModal">
+  <div class="modal-card" style="width: 100%; max-width: 380px; background-color: var(--white); padding: 35px; border-radius: var(--radius-md); position: relative; text-align: center; border: 1px solid var(--border-color);">
+    <button onclick="closeQrModal()" style="position: absolute; top: 20px; right: 20px; border: none; background: none; font-size: 1.5rem; cursor: pointer; color: var(--text-secondary);">&times;</button>
+    <h3 style="font-family: 'Poppins', sans-serif; color: var(--dark-green); margin-bottom: 20px;"><i class="fa-solid fa-qrcode"></i> QR Routing Tag</h3>
+    <div id="qrcode-container" style="display: flex; justify-content: center; margin-bottom: 20px;"></div>
+    <p style="font-size: 0.85rem; color: var(--text-secondary);" id="qrModalText"></p>
+  </div>
+</div>
+
 <%- include('partials/footer') %>

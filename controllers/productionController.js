@@ -1,4 +1,5 @@
 const { supabase } = require('../config/db');
+const { sendBatchStatusNotification } = require('../services/notificationService');
 
 exports.getAllBatches = async (req, res) => {
   try {
@@ -130,6 +131,13 @@ exports.updateBatchStatus = async (req, res) => {
       .eq('id', id);
 
     if (error) throw error;
+
+    try {
+      await sendBatchStatusNotification(batch.batch_no, status, batch.operator_name);
+    } catch (notifyErr) {
+      console.error('Failed to send batch status notification:', notifyErr);
+    }
+
     res.json({ success: true, message: 'Batch status updated successfully.' });
   } catch (error) {
     console.error('Update batch status error:', error);

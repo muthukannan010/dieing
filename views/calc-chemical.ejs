@@ -59,9 +59,75 @@
         </div>
       </div>
     </div>
-  
 
+    <!-- AI Prediction Section -->
+    <div class="calculator-grid animate-fade" style="margin-top: 20px;">
+      <div class="form-card" style="grid-column: 1 / -1;">
+        <h3 style="margin-bottom: 20px; font-family: 'Poppins', sans-serif; color: var(--dark-green);"><i class="fa-solid fa-wand-magic-sparkles"></i> AI Color Recipe Prediction</h3>
+        <p style="color: var(--text-secondary); margin-bottom: 15px;">Use historical machine learning data to predict dye and chemical requirements.</p>
+        
+        <div style="display: flex; gap: 15px; margin-bottom: 15px;">
+          <div class="form-group" style="flex: 1;">
+            <label for="ai-fabric">Fabric Type</label>
+            <input type="text" id="ai-fabric" class="form-field" placeholder="e.g. Cotton">
+          </div>
+          <div class="form-group" style="flex: 1;">
+            <label for="ai-color">Target Color</label>
+            <input type="text" id="ai-color" class="form-field" placeholder="e.g. Navy Blue">
+          </div>
+        </div>
+        
+        <button class="btn btn-secondary" onclick="predictColorRecipe()">
+          <i class="fa-solid fa-brain"></i> Predict Recipe
+        </button>
+        
+        <div id="ai-prediction-result" style="margin-top: 20px; padding: 15px; background-color: var(--bg-color); border-radius: var(--radius-sm); border: 1px solid var(--border-color); display: none;">
+          <h4 style="color: var(--dark-green); margin-bottom: 10px;">Predicted Recipe</h4>
+          <pre id="ai-prediction-content" style="background: #1e1e1e; color: #d4d4d4; padding: 15px; border-radius: 5px; font-family: monospace; overflow-x: auto;"></pre>
+        </div>
+      </div>
+    </div>
+  
   </main>
 </div>
+
+<script>
+async function predictColorRecipe() {
+  const fabricType = document.getElementById('ai-fabric').value;
+  const colorName = document.getElementById('ai-color').value;
+  
+  if (!fabricType || !colorName) {
+    alert("Please enter both Fabric Type and Target Color.");
+    return;
+  }
+  
+  const resultDiv = document.getElementById('ai-prediction-result');
+  const resultContent = document.getElementById('ai-prediction-content');
+  
+  resultContent.innerText = "Analyzing historical data...\nGenerating prediction...";
+  resultDiv.style.display = 'block';
+  
+  try {
+    // Note: The flask app runs on port 3000 but Node.js might be on a different port. 
+    // Assuming we can reach /api/predict-color directly if hosted together, or we'll proxy it.
+    // For now we assume the Python API is accessible at http://localhost:3000/api/predict-color or same host.
+    const response = await fetch('http://localhost:3000/api/predict-color', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ fabric_type: fabricType, color_name: colorName })
+    });
+    
+    if (response.ok) {
+      const data = await response.json();
+      resultContent.innerText = JSON.stringify(data.recipe, null, 2);
+    } else {
+      resultContent.innerText = "Failed to connect to AI Engine.";
+    }
+  } catch (error) {
+    console.error("AI Prediction Error:", error);
+    resultContent.innerText = "Error: Could not reach the prediction service. Ensure the Flask engine is running on port 3000.";
+  }
+}
+</script>
 
 <%- include('partials/footer') %>
